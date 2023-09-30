@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "itty_bitty:live_cod",
+    "itty_bitty:live_salmon",
+    "itty_bitty:live_pufferfish",
+    "itty_bitty:live_tropical_fish",
+    "itty_bitty:live_tetra"
+  ]
+}

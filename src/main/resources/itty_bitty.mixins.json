@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.ninni.itty_bitty.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "AbstractFishMixin",
+    "MobBucketItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}

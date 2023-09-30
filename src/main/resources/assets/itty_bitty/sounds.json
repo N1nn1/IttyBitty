@@ -1,0 +1,33 @@
+{
+	"entity.fish.flop": {
+		"sounds": [
+			"minecraft:entity/fish/flop1",
+			"minecraft:entity/fish/flop2",
+			"minecraft:entity/fish/flop3",
+			"minecraft:entity/fish/flop4"
+		],
+		"subtitle": "subtitles.entity.itty_bitty.fish.flop"
+	},
+	"entity.fish.hurt": {
+		"sounds": [
+			"minecraft:entity/fish/hurt1",
+			"minecraft:entity/fish/hurt2",
+			"minecraft:entity/fish/hurt3",
+			"minecraft:entity/fish/hurt4"
+		],
+		"subtitle": "subtitles.entity.itty_bitty.fish.hurt"
+	},
+	"entity.fish.death": {
+		"sounds": [
+			"minecraft:entity/fish/hurt1",
+			"minecraft:entity/fish/hurt2",
+			"minecraft:entity/fish/hurt3",
+			"minecraft:entity/fish/hurt4"
+		],
+		"subtitle": "subtitles.entity.itty_bitty.fish.death"
+	},
+	"entity.fish.ambient": {
+		"sounds": [],
+		"subtitle": "subtitles.entity.itty_bitty.fish.ambient"
+	}
+}

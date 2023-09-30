@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "itty_bitty",
+	"version": "${version}",
+	"name": "Itty Bitty",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"DinoTazz",
+		"Inzaenity",
+		"Ninni",
+		"VakyPanda"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/itty_bitty/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.ninni.itty_bitty.IttyBitty"
+		],
+		"client": [
+			"com.ninni.itty_bitty.IttyBittyClient"
+		]
+	},
+	"mixins": [
+		"itty_bitty.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.22",
+		"minecraft": "~1.20.2",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
