@@ -16,6 +16,7 @@ public class IttyBittyCreativeModeTab {
                 output.accept(TETRA_SPAWN_EGG);
                 output.accept(TETRA_BUCKET);
                 output.accept(NET);
+                output.accept(BUBBLEBOX);
             }).build()
     );
 
