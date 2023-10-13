@@ -7,6 +7,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.animal.TropicalFish;
@@ -32,31 +33,38 @@ public class CollectedMobItem extends Item {
         this.fish = fish;
     }
 
+
+
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack itemStack, ItemStack itemStack2, Slot slot, ClickAction clickAction, Player player, SlotAccess slotAccess) {
         ItemStack output;
 
         if (itemStack2.is(Items.WATER_BUCKET) && itemStack.hasTag()) {
+
             if (this.type.equals(EntityType.COD)) {
                 output = new ItemStack(Items.COD_BUCKET);
+                player.playSound(SoundEvents.BUCKET_FILL_FISH);
             } else if (this.type.equals(EntityType.SALMON)) {
                 output = new ItemStack(Items.SALMON_BUCKET);
+                player.playSound(SoundEvents.BUCKET_FILL_FISH);
             } else if (this.type.equals(EntityType.TROPICAL_FISH)) {
                 output = new ItemStack(Items.TROPICAL_FISH_BUCKET);
+                player.playSound(SoundEvents.BUCKET_FILL_FISH);
             } else if (this.type.equals(EntityType.PUFFERFISH)) {
                 output = new ItemStack(Items.PUFFERFISH_BUCKET);
+                player.playSound(SoundEvents.BUCKET_FILL_FISH);
             } else if (this.type.equals(IttyBittyEntityType.TETRA)) {
                 output = new ItemStack(IttyBittyItems.TETRA_BUCKET);
+                player.playSound(SoundEvents.BUCKET_FILL_FISH);
             } else {
                 throw new IncompatibleClassChangeError();
             }
 
-            output.setTag(itemStack.getTag());
 
-            player.addItem(output);
+            output.setTag(itemStack.getTag());
+            slotAccess.set(output);
             itemStack.shrink(1);
             itemStack2.shrink(1);
-
             return true;
         }
 

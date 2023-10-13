@@ -11,6 +11,7 @@ public class BubbleBoxSlot extends Slot {
         super(container, i, j, k);
     }
 
+    @Override
     public boolean mayPickup(Player player) {
         return false;
     }
