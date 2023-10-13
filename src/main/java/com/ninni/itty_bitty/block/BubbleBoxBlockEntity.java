@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.stream.IntStream;
 
 public class BubbleBoxBlockEntity extends RandomizableContainerBlockEntity {
     public static final String ITEMS_TAG = "Items";
