@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AbstractFishMixin",
-    "MobBucketItemMixin"
+    "MobBucketItemMixin",
+    "MobMixin"
   ],
   "injectors": {
     "defaultRequire": 1

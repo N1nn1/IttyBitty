@@ -38,12 +38,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BubbleBoxBlock extends BaseEntityBlock {
+public class BugBoxBlock extends BaseEntityBlock {
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final ResourceLocation CONTENTS = new ResourceLocation("contents");
 
-    public BubbleBoxBlock(Properties properties) {
+    public BugBoxBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false));
     }
@@ -57,9 +57,9 @@ public class BubbleBoxBlock extends BaseEntityBlock {
             return InteractionResult.CONSUME;
         }
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        if (blockEntity instanceof BubbleBoxBlockEntity bubbleBoxBlockEntity) {
-            if (BubbleBoxBlock.canOpen(level, blockPos)) {
-                player.openMenu(bubbleBoxBlockEntity);
+        if (blockEntity instanceof BugBoxBlockEntity bugBoxBlockEntity) {
+            if (BugBoxBlock.canOpen(level, blockPos)) {
+                player.openMenu(bugBoxBlockEntity);
                 PiglinAi.angerNearbyPiglins(player, true);
             }
             return InteractionResult.CONSUME;
@@ -69,24 +69,17 @@ public class BubbleBoxBlock extends BaseEntityBlock {
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
-        double d = blockPos.getX();
-        double e = blockPos.getY() + 1;
-        double f = blockPos.getZ();
-        //if (blockState.getValue(OPEN) && randomSource.nextInt(2) == 0) {
-            //TODO replace them bubble particle
-            //level.addAlwaysVisibleParticle(ParticleTypes.FISHING, d + 0.5 + randomSource.nextFloat()/4, e, f + 0.5 + randomSource.nextFloat()/4, randomSource.nextInt(-1, 1)/32f, randomSource.nextFloat()/32f, randomSource.nextInt(-1, 1)/32f);
-        //}
     }
 
     @Override
     public void playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        if (blockEntity instanceof BubbleBoxBlockEntity bubbleBoxBlockEntity) {
-            if (!level.isClientSide && ((player.isCreative() && !bubbleBoxBlockEntity.isEmpty()) || !player.isCreative())) {
-                ItemStack itemStack = IttyBittyItems.BUBBLEBOX.getDefaultInstance();
+        if (blockEntity instanceof BugBoxBlockEntity bugBoxBlockEntity) {
+            if (!level.isClientSide && ((player.isCreative() && !bugBoxBlockEntity.isEmpty()) || !player.isCreative())) {
+                ItemStack itemStack = IttyBittyItems.BUGBOX.getDefaultInstance();
                 blockEntity.saveToItem(itemStack);
-                if (bubbleBoxBlockEntity.hasCustomName()) {
-                    itemStack.setHoverName(bubbleBoxBlockEntity.getCustomName());
+                if (bugBoxBlockEntity.hasCustomName()) {
+                    itemStack.setHoverName(bugBoxBlockEntity.getCustomName());
                 }
                 ItemEntity itemEntity = new ItemEntity(level, (double)blockPos.getX() + 0.5, (double)blockPos.getY() + 0.5, (double)blockPos.getZ() + 0.5, itemStack);
                 itemEntity.setDefaultPickUpDelay();
@@ -99,7 +92,7 @@ public class BubbleBoxBlock extends BaseEntityBlock {
     @Override
     public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
         BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        if (blockEntity instanceof BubbleBoxBlockEntity blockEntity1) {
+        if (blockEntity instanceof BugBoxBlockEntity blockEntity1) {
             builder = builder.withDynamicDrop(CONTENTS, consumer -> {
                 for (int i = 0; i < blockEntity1.getContainerSize(); ++i) {
                     consumer.accept(blockEntity1.getItem(i));
@@ -115,7 +108,7 @@ public class BubbleBoxBlock extends BaseEntityBlock {
         CompoundTag compoundTag = BlockItem.getBlockEntityData(itemStack);
         if (compoundTag != null) {
             if (compoundTag.contains("LootTable", 8)) {
-                list.add(Component.translatable("container.bubblebox.unknownContents"));
+                list.add(Component.translatable("container.bugbox.unknownContents"));
             }
             if (compoundTag.contains("Items", 9)) {
                 NonNullList<ItemStack> nonNullList = NonNullList.withSize(54, ItemStack.EMPTY);
@@ -127,10 +120,10 @@ public class BubbleBoxBlock extends BaseEntityBlock {
                     ++j;
                     if (i > 4) continue;
                     ++i;
-                    list.add(Component.translatable("container.bubblebox.itemCount", itemStack2.getHoverName()).withStyle(ChatFormatting.AQUA));
+                    list.add(Component.translatable("container.bugbox.itemCount", itemStack2.getHoverName()).withStyle(ChatFormatting.GREEN));
                 }
                 if (j - i > 0) {
-                    list.add(Component.translatable("container.bubblebox.more", j - i).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
+                    list.add(Component.translatable("container.bugbox.more", j - i).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GREEN));
                 }
             }
         }
@@ -144,16 +137,16 @@ public class BubbleBoxBlock extends BaseEntityBlock {
     @Override
     public void setPlacedBy(Level level, BlockPos blockPos, BlockState blockState, LivingEntity livingEntity, ItemStack itemStack) {
         BlockEntity blockEntity;
-        if (itemStack.hasCustomHoverName() && (blockEntity = level.getBlockEntity(blockPos)) instanceof BubbleBoxBlockEntity) {
-            ((BubbleBoxBlockEntity)blockEntity).setCustomName(itemStack.getHoverName());
+        if (itemStack.hasCustomHoverName() && (blockEntity = level.getBlockEntity(blockPos)) instanceof BugBoxBlockEntity) {
+            ((BugBoxBlockEntity)blockEntity).setCustomName(itemStack.getHoverName());
         }
     }
 
     @Override
     public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         BlockEntity blockEntity = serverLevel.getBlockEntity(blockPos);
-        if (blockEntity instanceof BubbleBoxBlockEntity) {
-            ((BubbleBoxBlockEntity)blockEntity).recheckOpen();
+        if (blockEntity instanceof BugBoxBlockEntity) {
+            ((BugBoxBlockEntity)blockEntity).recheckOpen();
         }
     }
 
@@ -161,11 +154,12 @@ public class BubbleBoxBlock extends BaseEntityBlock {
     public void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
         if (blockState.is(blockState2.getBlock())) return;
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        if (blockEntity instanceof BubbleBoxBlockEntity) {
+        if (blockEntity instanceof BugBoxBlockEntity) {
             level.updateNeighbourForOutputSignal(blockPos, blockState.getBlock());
         }
         super.onRemove(blockState, level, blockPos, blockState2, bl);
     }
+
 
     @Override
     public BlockState rotate(BlockState blockState, Rotation rotation) {
@@ -190,7 +184,7 @@ public class BubbleBoxBlock extends BaseEntityBlock {
     @Override
     public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
         ItemStack itemStack = super.getCloneItemStack(blockGetter, blockPos, blockState);
-        blockGetter.getBlockEntity(blockPos, IttyBittyBlockEntityType.BUBBLEBOX).ifPresent(BubbleBoxBlockEntity -> BubbleBoxBlockEntity.saveToItem(itemStack));
+        blockGetter.getBlockEntity(blockPos, IttyBittyBlockEntityType.BUGBOX).ifPresent(BugBoxBlockEntity -> BugBoxBlockEntity.saveToItem(itemStack));
         return itemStack;
     }
 
@@ -200,6 +194,6 @@ public class BubbleBoxBlock extends BaseEntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new BubbleBoxBlockEntity(blockPos, blockState);
+        return new BugBoxBlockEntity(blockPos, blockState);
     }
 }

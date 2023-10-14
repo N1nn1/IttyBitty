@@ -12,4 +12,5 @@ public interface IttyBittyTags {
 
     //Item tags
     TagKey<Item> LIVE_FISH = TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "live_fish"));
+    TagKey<Item> LIVE_BUGS = TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "live_bugs"));
 }

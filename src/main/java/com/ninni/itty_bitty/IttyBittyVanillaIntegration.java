@@ -2,6 +2,7 @@ package com.ninni.itty_bitty;
 
 import com.google.common.reflect.Reflection;
 import com.ninni.itty_bitty.client.gui.screen.BubbleBoxScreen;
+import com.ninni.itty_bitty.client.gui.screen.BugBoxScreen;
 import com.ninni.itty_bitty.client.renderer.entity.TetraRenderer;
 import com.ninni.itty_bitty.registry.IttyBittyEntityType;
 import com.ninni.itty_bitty.registry.IttyBittyModelLayers;
@@ -30,6 +31,7 @@ public class IttyBittyVanillaIntegration {
 
     private static void registerScreens() {
         MenuScreens.register(IttyBittyMenuType.BUBBLEBOX, BubbleBoxScreen::new);
+        MenuScreens.register(IttyBittyMenuType.BUGBOX, BugBoxScreen::new);
     }
 
 }

@@ -20,12 +20,17 @@ public class IttyBittyItems {
 
     public static final Item NET = register("net", new Item(new Item.Properties().stacksTo(1)));
     public static final Item BUBBLEBOX = register("bubblebox", new BlockItem(IttyBittyBlocks.BUBBLEBOX, new Item.Properties().stacksTo(1)));
+    public static final Item BUGBOX = register("bugbox", new BlockItem(IttyBittyBlocks.BUGBOX, new Item.Properties().stacksTo(1)));
 
     public static final Item LIVE_COD = register("live_cod", new CollectedMobItem(EntityType.COD, true, new Item.Properties().stacksTo(1)));
     public static final Item LIVE_SALMON = register("live_salmon", new CollectedMobItem(EntityType.SALMON, true, new Item.Properties().stacksTo(1)));
     public static final Item LIVE_PUFFERFISH = register("live_pufferfish", new CollectedMobItem(EntityType.PUFFERFISH, true, new Item.Properties().stacksTo(1)));
     public static final Item LIVE_TROPICAL_FISH = register("live_tropical_fish", new CollectedMobItem(EntityType.TROPICAL_FISH, true, new Item.Properties().stacksTo(1)));
     public static final Item LIVE_TETRA = register("live_tetra", new CollectedMobItem(IttyBittyEntityType.TETRA, true, new Item.Properties().stacksTo(1)));
+    public static final Item LIVE_TADPOLE = register("live_tadpole", new CollectedMobItem(EntityType.TADPOLE, true, new Item.Properties().stacksTo(1)));
+
+    public static final Item LIVE_SILVERFISH = register("live_silverfish", new CollectedMobItem(EntityType.SILVERFISH, false, new Item.Properties().stacksTo(1)));
+    public static final Item LIVE_ENDERMITE = register("live_endermite", new CollectedMobItem(EntityType.ENDERMITE, false, new Item.Properties().stacksTo(1)));
 
     private static Item register(String id, Item item) {
         return Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(IttyBitty.MOD_ID, id), item);

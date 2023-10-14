@@ -4,12 +4,17 @@ import com.ninni.itty_bitty.entity.variant.TetraVariant;
 import com.ninni.itty_bitty.registry.IttyBittyEntityType;
 import com.ninni.itty_bitty.registry.IttyBittyItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.TropicalFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
@@ -18,14 +23,16 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CollectedMobItem extends Item {
     private final EntityType<?> type;
-    private boolean fish;
+    private final boolean fish;
 
     public CollectedMobItem(EntityType<?> entityType, boolean fish, Properties properties) {
         super(properties);
@@ -33,13 +40,47 @@ public class CollectedMobItem extends Item {
         this.fish = fish;
     }
 
+    @Override
+    public InteractionResult useOn(UseOnContext useOnContext) {
+        if (!this.fish) {
+            BlockPos pos = useOnContext.getClickedPos();
+            ItemStack stack = useOnContext.getItemInHand();
 
+            Mob bug = (Mob)type.create(useOnContext.getLevel());
+            if (stack.hasCustomHoverName()) bug.setCustomName(stack.getHoverName());
+            if (stack.hasTag()) {
+                if (stack.getTag().contains("NoAI")) {
+                    bug.setNoAi(stack.getTag().getBoolean("NoAI"));
+                }
+                if (stack.getTag().contains("Silent")) {
+                    bug.setSilent(stack.getTag().getBoolean("Silent"));
+                }
+                if (stack.getTag().contains("NoGravity")) {
+                    bug.setNoGravity(stack.getTag().getBoolean("NoGravity"));
+                }
+                if (stack.getTag().contains("Glowing")) {
+                    bug.setGlowingTag(stack.getTag().getBoolean("Glowing"));
+                }
+                if (stack.getTag().contains("Invulnerable")) {
+                    bug.setInvulnerable(stack.getTag().getBoolean("Invulnerable"));
+                }
+                if (stack.getTag().contains("Health")) {
+                    bug.setHealth(stack.getTag().getFloat("Health"));
+                }
+            }
+
+            bug.moveTo(pos.getX(), pos.getY(), pos.getZ(), Objects.requireNonNull(useOnContext.getPlayer()).getYRot(), 0.0f);
+            useOnContext.getLevel().addFreshEntity(bug);
+        }
+
+        return super.useOn(useOnContext);
+    }
 
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack itemStack, ItemStack itemStack2, Slot slot, ClickAction clickAction, Player player, SlotAccess slotAccess) {
         ItemStack output;
 
-        if (itemStack2.is(Items.WATER_BUCKET) && itemStack.hasTag()) {
+        if (itemStack2.is(Items.WATER_BUCKET) && itemStack.hasTag() && this.fish) {
 
             if (this.type.equals(EntityType.COD)) {
                 output = new ItemStack(Items.COD_BUCKET);
@@ -53,6 +94,9 @@ public class CollectedMobItem extends Item {
             } else if (this.type.equals(EntityType.PUFFERFISH)) {
                 output = new ItemStack(Items.PUFFERFISH_BUCKET);
                 player.playSound(SoundEvents.BUCKET_FILL_FISH);
+            } else if (this.type.equals(EntityType.TADPOLE)) {
+                output = new ItemStack(Items.TADPOLE_BUCKET);
+                player.playSound(SoundEvents.BUCKET_EMPTY_TADPOLE);
             } else if (this.type.equals(IttyBittyEntityType.TETRA)) {
                 output = new ItemStack(IttyBittyItems.TETRA_BUCKET);
                 player.playSound(SoundEvents.BUCKET_FILL_FISH);

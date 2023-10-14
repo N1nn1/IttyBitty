@@ -23,7 +23,7 @@ public class TetraRenderer extends MobRenderer<Tetra, TetraModel<Tetra>> {
     private final TetraModel<Tetra> rocket;
 
     public TetraRenderer(EntityRendererProvider.Context context) {
-        super(context, new TetraModel<>(context.bakeLayer(IttyBittyModelLayers.TETRA_TORPEDO)), 0.1F);
+        super(context, new TetraModel<>(context.bakeLayer(IttyBittyModelLayers.TETRA_TORPEDO)), 0.2F);
         this.dinnerplate = new TetraModel<>(context.bakeLayer(IttyBittyModelLayers.TETRA_DINNERPLATE));
         this.rocket = new TetraModel<>(context.bakeLayer(IttyBittyModelLayers.TETRA_ROCKET));
     }

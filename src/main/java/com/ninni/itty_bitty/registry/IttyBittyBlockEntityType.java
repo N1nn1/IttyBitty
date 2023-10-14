@@ -12,10 +12,16 @@ import static com.ninni.itty_bitty.IttyBitty.MOD_ID;
 public class IttyBittyBlockEntityType {
 
     public static final BlockEntityType<BubbleBoxBlockEntity> BUBBLEBOX = Registry.register(
-            BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(MOD_ID, "prickly_can"),
+            BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(MOD_ID, "bubblebox"),
             FabricBlockEntityTypeBuilder.create(BubbleBoxBlockEntity::new,
                     IttyBittyBlocks.BUBBLEBOX
             ).build(null)
     );
 
+    public static final BlockEntityType<BubbleBoxBlockEntity> BUGBOX = Registry.register(
+            BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(MOD_ID, "bugbox"),
+            FabricBlockEntityTypeBuilder.create(BubbleBoxBlockEntity::new,
+                    IttyBittyBlocks.BUGBOX
+            ).build(null)
+    );
 }

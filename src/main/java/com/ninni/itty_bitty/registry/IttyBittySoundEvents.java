@@ -15,6 +15,11 @@ public interface IttyBittySoundEvents {
     SoundEvent FISH_HURT = register("entity.fish.hurt");
     SoundEvent FISH_DEATH = register("entity.fish.death");
 
+    SoundEvent COLLECT_FISH = register("item.net.fish");
+    SoundEvent COLLECT_TADPOLE = register("item.net.tadpole");
+    SoundEvent COLLECT_BUG = register("item.net.bug");
+    SoundEvent COLLECT_FAIL = register("item.net.fail");
+
     static SoundEvent register(String name) {
         ResourceLocation id = new ResourceLocation(MOD_ID, name);
         return Registry.register(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
