@@ -1,0 +1,38 @@
+{
+  "parent": "itty_bitty:itty_bitty/root",
+  "criteria": {
+    "obtain_net": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "itty_bitty:net"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.itty_bitty.obtain_net.description"
+    },
+    "frame": "task",
+    "hidden": true,
+    "icon": {
+      "item": "itty_bitty:net"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.itty_bitty.obtain_net.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_net"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

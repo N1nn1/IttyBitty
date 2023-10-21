@@ -29,5 +29,72 @@
 	"entity.fish.ambient": {
 		"sounds": [],
 		"subtitle": "subtitles.entity.itty_bitty.fish.ambient"
+	},
+	"item.net.fish": {
+		"sounds": [
+			"itty_bitty:item/net/collect_fish1",
+			"itty_bitty:item/net/collect_fish2",
+			"itty_bitty:item/net/collect_fish3",
+			"itty_bitty:item/net/collect_fish4",
+			"itty_bitty:item/net/collect_fish5",
+			"itty_bitty:item/net/collect_fish6"
+		],
+		"subtitle": "subtitles.item.itty_bitty.net.fish"
+	},
+	"item.net.tadpole": {
+		"sounds": [
+			"itty_bitty:item/net/collect_fish1",
+			"itty_bitty:item/net/collect_fish2",
+			"itty_bitty:item/net/collect_fish3",
+			"itty_bitty:item/net/collect_fish4",
+			"itty_bitty:item/net/collect_fish5",
+			"itty_bitty:item/net/collect_fish6"
+		],
+		"subtitle": "subtitles.item.itty_bitty.net.tadpole"
+	},
+	"item.net.axolotl": {
+		"sounds": [
+			"itty_bitty:item/net/collect_axolotl1",
+			"itty_bitty:item/net/collect_axolotl2",
+			"itty_bitty:item/net/collect_axolotl3",
+			"itty_bitty:item/net/collect_axolotl4",
+			"itty_bitty:item/net/collect_axolotl5"
+		],
+		"subtitle": "subtitles.item.itty_bitty.net.axolotl"
+	},
+	"item.net.bug": {
+		"sounds": [
+			"itty_bitty:item/net/collect_bug1",
+			"itty_bitty:item/net/collect_bug2",
+			"itty_bitty:item/net/collect_bug3",
+			"itty_bitty:item/net/collect_bug4",
+			"itty_bitty:item/net/collect_bug5",
+			"itty_bitty:item/net/collect_bug6"
+		],
+		"subtitle": "subtitles.item.itty_bitty.net.bug"
+	},
+	"item.net.silverfish": {
+		"sounds": [
+			"itty_bitty:item/net/collect_monster1",
+			"itty_bitty:item/net/collect_monster2",
+			"itty_bitty:item/net/collect_monster3"
+		],
+		"subtitle": "subtitles.item.itty_bitty.net.silverfish"
+	},
+	"item.net.endermite": {
+		"sounds": [
+			"itty_bitty:item/net/collect_monster1",
+			"itty_bitty:item/net/collect_monster2",
+			"itty_bitty:item/net/collect_monster3"
+		],
+		"subtitle": "subtitles.item.itty_bitty.net.endermite"
+	},
+	"item.net.fail": {
+		"sounds": [
+			"itty_bitty:item/net/fail1",
+			"itty_bitty:item/net/fail2",
+			"itty_bitty:item/net/fail3"
+		],
+		"subtitle": "subtitles.item.itty_bitty.net.fail"
 	}
 }

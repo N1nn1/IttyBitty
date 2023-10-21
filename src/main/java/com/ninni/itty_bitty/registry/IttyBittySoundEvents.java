@@ -17,8 +17,12 @@ public interface IttyBittySoundEvents {
 
     SoundEvent COLLECT_FISH = register("item.net.fish");
     SoundEvent COLLECT_TADPOLE = register("item.net.tadpole");
+    SoundEvent COLLECT_AXOLOTL = register("item.net.axolotl");
     SoundEvent COLLECT_BUG = register("item.net.bug");
+    SoundEvent COLLECT_SILVERFISH = register("item.net.silverfish");
+    SoundEvent COLLECT_ENDERMITE = register("item.net.endermite");
     SoundEvent COLLECT_FAIL = register("item.net.fail");
+    SoundEvent RELEASE_BUG = register("item.collected_mob.release_bug");
 
     static SoundEvent register(String name) {
         ResourceLocation id = new ResourceLocation(MOD_ID, name);

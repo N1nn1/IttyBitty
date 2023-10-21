@@ -13,11 +13,13 @@ import static com.ninni.itty_bitty.registry.IttyBittyItems.*;
 public class IttyBittyCreativeModeTab {
 
     public static final CreativeModeTab ITEM_GROUP = register("item_group", FabricItemGroup.builder().icon(TETRA_BUCKET::getDefaultInstance).title(Component.translatable("itty_bitty.item_group")).displayItems((featureFlagSet, output) -> {
-                output.accept(TETRA_SPAWN_EGG);
-                output.accept(TETRA_BUCKET);
+                output.accept(KELPLASTIC);
                 output.accept(NET);
+                output.accept(GOLDEN_NET);
                 output.accept(BUBBLEBOX);
                 output.accept(BUGBOX);
+                output.accept(TETRA_SPAWN_EGG);
+                output.accept(TETRA_BUCKET);
             }).build()
     );
 

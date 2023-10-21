@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  #",
+    " #S",
+    "#SS"
+  ],
+  "key": {
+    "#": {
+      "item": "itty_bitty:kelplastic"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "result": {
+    "item": "itty_bitty:net",
+    "count": 1
+  }
+}

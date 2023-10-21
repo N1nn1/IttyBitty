@@ -106,6 +106,8 @@ public class BugBoxBlock extends BaseEntityBlock {
     public void appendHoverText(ItemStack itemStack, @Nullable BlockGetter blockGetter, List<Component> list, TooltipFlag tooltipFlag) {
         super.appendHoverText(itemStack, blockGetter, list, tooltipFlag);
         CompoundTag compoundTag = BlockItem.getBlockEntityData(itemStack);
+        int items = 0;
+
         if (compoundTag != null) {
             if (compoundTag.contains("LootTable", 8)) {
                 list.add(Component.translatable("container.bugbox.unknownContents"));
@@ -113,18 +115,11 @@ public class BugBoxBlock extends BaseEntityBlock {
             if (compoundTag.contains("Items", 9)) {
                 NonNullList<ItemStack> nonNullList = NonNullList.withSize(54, ItemStack.EMPTY);
                 ContainerHelper.loadAllItems(compoundTag, nonNullList);
-                int i = 0;
-                int j = 0;
-                for (ItemStack itemStack2 : nonNullList) {
-                    if (itemStack2.isEmpty()) continue;
-                    ++j;
-                    if (i > 4) continue;
-                    ++i;
-                    list.add(Component.translatable("container.bugbox.itemCount", itemStack2.getHoverName()).withStyle(ChatFormatting.GREEN));
+                for (ItemStack itemStack1 : nonNullList) {
+                    if (itemStack1.isEmpty()) continue;
+                    items += 1;
                 }
-                if (j - i > 0) {
-                    list.add(Component.translatable("container.bugbox.more", j - i).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GREEN));
-                }
+                list.add(Component.translatable("container.bugbox.fullness", items, nonNullList.size()).withStyle(ChatFormatting.GREEN));
             }
         }
     }
@@ -189,7 +184,7 @@ public class BugBoxBlock extends BaseEntityBlock {
     }
 
     private static boolean canOpen(Level level, BlockPos blockPos) {
-        return level.getBlockState(blockPos.above()).isAir();
+        return !level.getBlockState(blockPos.above()).isSolid();
     }
 
     @Override

@@ -1,0 +1,38 @@
+{
+  "criteria": {
+    "item": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:water_bucket"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "itty_bitty:textures/gui/advancements/backgrounds/itty_bitty.png",
+    "description": {
+      "translate": "advancements.itty_bitty.root.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:water_bucket"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.itty_bitty.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "item"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,25 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"1": "itty_bitty:block/bugbox_back",
+		"2": "itty_bitty:block/bugbox_bottom",
+		"3": "itty_bitty:block/bugbox_front",
+		"4": "itty_bitty:block/bugbox_side",
+		"5": "itty_bitty:block/bugbox_top_closed",
+		"particle": "itty_bitty:block/bugbox_back"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#4"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#4"},
+				"up": {"uv": [0, 16, 16, 0], "texture": "#5"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#2"}
+			}
+		}
+	]
+}

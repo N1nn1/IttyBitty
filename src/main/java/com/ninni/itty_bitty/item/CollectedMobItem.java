@@ -3,6 +3,7 @@ package com.ninni.itty_bitty.item;
 import com.ninni.itty_bitty.entity.variant.TetraVariant;
 import com.ninni.itty_bitty.registry.IttyBittyEntityType;
 import com.ninni.itty_bitty.registry.IttyBittyItems;
+import com.ninni.itty_bitty.registry.IttyBittySoundEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -11,10 +12,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SlotAccess;
-import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.TropicalFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
@@ -23,6 +22,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -43,34 +43,20 @@ public class CollectedMobItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext useOnContext) {
         if (!this.fish) {
-            BlockPos pos = useOnContext.getClickedPos();
+            BlockPlaceContext blockPlaceContext = new BlockPlaceContext(useOnContext);
+            BlockPos pos = blockPlaceContext.getClickedPos();
             ItemStack stack = useOnContext.getItemInHand();
 
             Mob bug = (Mob)type.create(useOnContext.getLevel());
             if (stack.hasCustomHoverName()) bug.setCustomName(stack.getHoverName());
             if (stack.hasTag()) {
-                if (stack.getTag().contains("NoAI")) {
-                    bug.setNoAi(stack.getTag().getBoolean("NoAI"));
-                }
-                if (stack.getTag().contains("Silent")) {
-                    bug.setSilent(stack.getTag().getBoolean("Silent"));
-                }
-                if (stack.getTag().contains("NoGravity")) {
-                    bug.setNoGravity(stack.getTag().getBoolean("NoGravity"));
-                }
-                if (stack.getTag().contains("Glowing")) {
-                    bug.setGlowingTag(stack.getTag().getBoolean("Glowing"));
-                }
-                if (stack.getTag().contains("Invulnerable")) {
-                    bug.setInvulnerable(stack.getTag().getBoolean("Invulnerable"));
-                }
-                if (stack.getTag().contains("Health")) {
-                    bug.setHealth(stack.getTag().getFloat("Health"));
-                }
+                bug.load(stack.getTag());
             }
-
             bug.moveTo(pos.getX(), pos.getY(), pos.getZ(), Objects.requireNonNull(useOnContext.getPlayer()).getYRot(), 0.0f);
+            useOnContext.getPlayer().playSound(IttyBittySoundEvents.RELEASE_BUG);
             useOnContext.getLevel().addFreshEntity(bug);
+            useOnContext.getPlayer().setItemInHand(useOnContext.getHand(), ItemStack.EMPTY);
+            return InteractionResult.SUCCESS;
         }
 
         return super.useOn(useOnContext);
@@ -96,7 +82,10 @@ public class CollectedMobItem extends Item {
                 player.playSound(SoundEvents.BUCKET_FILL_FISH);
             } else if (this.type.equals(EntityType.TADPOLE)) {
                 output = new ItemStack(Items.TADPOLE_BUCKET);
-                player.playSound(SoundEvents.BUCKET_EMPTY_TADPOLE);
+                player.playSound(SoundEvents.BUCKET_FILL_TADPOLE);
+            } else if (this.type.equals(EntityType.AXOLOTL)) {
+                output = new ItemStack(Items.AXOLOTL_BUCKET);
+                player.playSound(SoundEvents.BUCKET_FILL_AXOLOTL);
             } else if (this.type.equals(IttyBittyEntityType.TETRA)) {
                 output = new ItemStack(IttyBittyItems.TETRA_BUCKET);
                 player.playSound(SoundEvents.BUCKET_FILL_FISH);
@@ -140,8 +129,8 @@ public class CollectedMobItem extends Item {
 
         if (this.type == IttyBittyEntityType.TETRA && (compoundTag = itemStack.getTag()) != null && compoundTag.contains("BucketVariantTag", 3)) {
             int i = compoundTag.getInt("BucketVariantTag");
-            ChatFormatting[] chatFormattings = new ChatFormatting[]{ChatFormatting.ITALIC, ChatFormatting.GRAY};
-            list.add(Component.translatable("entity.itty_bitty.tetra.variant." + TetraVariant.byId(i).getSerializedName()).withStyle(chatFormattings));
+            list.add(Component.translatable("entity.itty_bitty.tetra.type." + TetraVariant.byId(i).getType()).withStyle(ChatFormatting.ITALIC, ChatFormatting.DARK_GRAY));
+            list.add(Component.translatable("entity.itty_bitty.tetra.variant." + TetraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, TetraVariant.byId(i).getColor()));
         }
     }
 }

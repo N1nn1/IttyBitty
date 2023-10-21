@@ -1,5 +1,6 @@
 package com.ninni.itty_bitty.mixin;
 
+import com.ninni.itty_bitty.IttyBittyTags;
 import com.ninni.itty_bitty.block.BubbleBoxBlockEntity;
 import com.ninni.itty_bitty.entity.Tetra;
 import com.ninni.itty_bitty.registry.IttyBittyBlockEntityType;
@@ -34,11 +35,11 @@ public abstract class AbstractFishMixin extends WaterAnimal implements Bucketabl
     public void collect(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
         ItemStack output;
 
-        if (this.getLiveFish() != null) {
+        if (this.getLiveFish(false) != null) {
 
             for (ItemStack itemStack2 : player.getInventory().items) {
                 if (itemStack2.is(IttyBittyItems.BUBBLEBOX)) {
-                    if (player.getItemInHand(interactionHand).is(IttyBittyItems.NET) && this.isAlive()) {
+                    if (player.getMainHandItem().is(IttyBittyTags.NETS) && this.isAlive()) {
 
                         CompoundTag compoundTag = BlockItem.getBlockEntityData(itemStack2);
 
@@ -47,7 +48,7 @@ public abstract class AbstractFishMixin extends WaterAnimal implements Bucketabl
                             ContainerHelper.loadAllItems(compoundTag, nonNullList);
                             for (int i = 0; i < nonNullList.size(); i++) {
                                 if (nonNullList.get(i).isEmpty()) {
-                                    output = getLiveFish();
+                                    output = getLiveFish(true);
                                     this.saveToBucketTag(output);
                                     this.discard();
                                     nonNullList.set(i, output);
@@ -60,7 +61,7 @@ public abstract class AbstractFishMixin extends WaterAnimal implements Bucketabl
                         if (compoundTag == null || !compoundTag.contains(BubbleBoxBlockEntity.ITEMS_TAG)) {
                             CompoundTag compoundTag1 = new CompoundTag();
                             NonNullList<ItemStack> nonNullList = NonNullList.withSize(54, ItemStack.EMPTY);
-                            output = getLiveFish();
+                            output = getLiveFish(true);
                             this.saveToBucketTag(output);
                             this.discard();
                             nonNullList.set(0, output);
@@ -73,7 +74,7 @@ public abstract class AbstractFishMixin extends WaterAnimal implements Bucketabl
                 }
             }
 
-            if (!player.getInventory().contains(IttyBittyItems.BUBBLEBOX.getDefaultInstance()) && player.getItemInHand(interactionHand).is(IttyBittyItems.NET) && this.isAlive()) {
+            if (!player.getInventory().hasAnyMatching(itemStack -> itemStack.is(IttyBittyItems.BUBBLEBOX)) && player.getMainHandItem().is(IttyBittyTags.NETS) && this.isAlive()) {
                 this.playSound(IttyBittySoundEvents.COLLECT_FAIL);
                 player.displayClientMessage(Component.translatable("net.bubblebox.missing"), true);
                 cir.setReturnValue(InteractionResult.sidedSuccess(this.level().isClientSide));
@@ -83,25 +84,25 @@ public abstract class AbstractFishMixin extends WaterAnimal implements Bucketabl
     }
 
 
-    private ItemStack getLiveFish() {
+    private ItemStack getLiveFish(boolean bl) {
         AbstractFish that = (AbstractFish) (Object) this;
         if (that instanceof Cod) {
-            this.playSound(IttyBittySoundEvents.COLLECT_FISH);
+            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_FISH);
             return new ItemStack(IttyBittyItems.LIVE_COD);
         } else if (that instanceof Salmon) {
-            this.playSound(IttyBittySoundEvents.COLLECT_FISH);
+            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_FISH);
             return new ItemStack(IttyBittyItems.LIVE_SALMON);
         } else if (that instanceof TropicalFish) {
-            this.playSound(IttyBittySoundEvents.COLLECT_FISH);
+            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_FISH);
             return new ItemStack(IttyBittyItems.LIVE_TROPICAL_FISH);
         } else if (that instanceof Pufferfish) {
-            this.playSound(IttyBittySoundEvents.COLLECT_FISH);
+            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_FISH);
             return new ItemStack(IttyBittyItems.LIVE_PUFFERFISH);
         } else if (that instanceof Tadpole) {
-            this.playSound(IttyBittySoundEvents.COLLECT_TADPOLE);
+            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_TADPOLE);
             return new ItemStack(IttyBittyItems.LIVE_TADPOLE);
         } else if (that instanceof Tetra) {
-            this.playSound(IttyBittySoundEvents.COLLECT_FISH);
+            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_FISH);
             return new ItemStack(IttyBittyItems.LIVE_TETRA);
         }
         return null;

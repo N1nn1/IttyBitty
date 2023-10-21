@@ -19,6 +19,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -113,6 +114,8 @@ public class BubbleBoxBlock extends BaseEntityBlock {
     public void appendHoverText(ItemStack itemStack, @Nullable BlockGetter blockGetter, List<Component> list, TooltipFlag tooltipFlag) {
         super.appendHoverText(itemStack, blockGetter, list, tooltipFlag);
         CompoundTag compoundTag = BlockItem.getBlockEntityData(itemStack);
+        int items = 0;
+
         if (compoundTag != null) {
             if (compoundTag.contains("LootTable", 8)) {
                 list.add(Component.translatable("container.bubblebox.unknownContents"));
@@ -120,18 +123,11 @@ public class BubbleBoxBlock extends BaseEntityBlock {
             if (compoundTag.contains("Items", 9)) {
                 NonNullList<ItemStack> nonNullList = NonNullList.withSize(54, ItemStack.EMPTY);
                 ContainerHelper.loadAllItems(compoundTag, nonNullList);
-                int i = 0;
-                int j = 0;
-                for (ItemStack itemStack2 : nonNullList) {
-                    if (itemStack2.isEmpty()) continue;
-                    ++j;
-                    if (i > 4) continue;
-                    ++i;
-                    list.add(Component.translatable("container.bubblebox.itemCount", itemStack2.getHoverName()).withStyle(ChatFormatting.AQUA));
+                for (ItemStack itemStack1 : nonNullList) {
+                    if (itemStack1.isEmpty()) continue;
+                    items += 1;
                 }
-                if (j - i > 0) {
-                    list.add(Component.translatable("container.bubblebox.more", j - i).withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.AQUA));
-                }
+                list.add(Component.translatable("container.bubblebox.fullness", items, nonNullList.size()).withStyle(ChatFormatting.AQUA));
             }
         }
     }
@@ -195,7 +191,7 @@ public class BubbleBoxBlock extends BaseEntityBlock {
     }
 
     private static boolean canOpen(Level level, BlockPos blockPos) {
-        return level.getBlockState(blockPos.above()).isAir();
+        return !level.getBlockState(blockPos.above()).isSolid();
     }
 
     @Override
