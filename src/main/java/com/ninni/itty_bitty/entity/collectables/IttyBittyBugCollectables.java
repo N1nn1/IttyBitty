@@ -8,8 +8,8 @@ import net.minecraft.world.item.Item;
 
 
 public enum IttyBittyBugCollectables {
-    SILVERFISH(EntityType.SILVERFISH, IttyBittyItems.LIVE_SILVERFISH, IttyBittySoundEvents.COLLECT_SILVERFISH, IttyBittySoundEvents.RELEASE_BUG),
-    ENDERMITE(EntityType.ENDERMITE, IttyBittyItems.LIVE_ENDERMITE, IttyBittySoundEvents.COLLECT_ENDERMITE, IttyBittySoundEvents.RELEASE_BUG),
+    SILVERFISH(EntityType.SILVERFISH, IttyBittyItems.LIVE_SILVERFISH, IttyBittySoundEvents.COLLECT_SILVERFISH, IttyBittySoundEvents.RELEASE_SILVERFISH),
+    ENDERMITE(EntityType.ENDERMITE, IttyBittyItems.LIVE_ENDERMITE, IttyBittySoundEvents.COLLECT_ENDERMITE, IttyBittySoundEvents.RELEASE_ENDERMITE),
     BEE(EntityType.BEE, IttyBittyItems.LIVE_BEE, IttyBittySoundEvents.COLLECT_BUG, IttyBittySoundEvents.RELEASE_BUG);
 
 

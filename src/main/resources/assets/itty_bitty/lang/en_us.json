@@ -1,18 +1,31 @@
 {
   "itty_bitty.item_group": "Itty Bitty",
 
+  "advancements.itty_bitty.root.title": "Itty Bitty",
+  "advancements.itty_bitty.root.description": "Less Cumbersome Commitment to Critter Collecting",
+  "advancements.itty_bitty.obtain_net.title": "Gotta Catch 'Em All!",
+  "advancements.itty_bitty.obtain_net.description": "Obtain a Net",
+  "advancements.itty_bitty.catch_bug.title": "Creepy Crawlies",
+  "advancements.itty_bitty.catch_bug.description": "Catch a bug with a Net",
+  "advancements.itty_bitty.catch_fish.title": "Fintastic!",
+  "advancements.itty_bitty.catch_fish.description": "Catch an aquatic animal with a Net",
+
   "item.itty_bitty.kelplastic": "Kelplastic",
   "item.itty_bitty.net": "Net",
   "item.itty_bitty.golden_net": "Golden Net",
   "item.itty_bitty.golden_net.when": "When in Main Hand:",
   "item.itty_bitty.golden_net.reach": "+2 Reach",
+
   "itty_bitty.container.bubblebox": "Bubble-Box",
   "block.itty_bitty.bubblebox": "Bubble-Box",
+
   "net.bubblebox.missing": "To catch Fish you need an empty Bubble-Box",
   "container.bubblebox.fullness": "%s/%s",
   "container.bubblebox.unknownContents": "???????",
+
   "itty_bitty.container.bugbox": "Bug-Box",
   "block.itty_bitty.bugbox": "Bug-Box",
+
   "net.inventory.full": "Out of Inventory space",
   "container.bugbox.fullness": "%s/%s",
   "container.bugbox.unknownContents": "???????",
@@ -29,21 +42,16 @@
 
   "entity.itty_bitty.collected_mob.baby": "Baby",
 
-  "advancements.itty_bitty.root.title": "Itty Bitty",
-  "advancements.itty_bitty.root.description": "Less Cumbersome Commitment to Critter Collecting",
-  "advancements.itty_bitty.obtain_net.title": "Gotta Catch 'Em All!",
-  "advancements.itty_bitty.obtain_net.description": "Obtain a Net",
-  "advancements.itty_bitty.catch_bug.title": "Creepy Crawlies",
-  "advancements.itty_bitty.catch_bug.description": "Catch a bug with a Net",
-  "advancements.itty_bitty.catch_fish.title": "Fintastic!",
-  "advancements.itty_bitty.catch_fish.description": "Catch an aquatic animal with a Net",
-
   "subtitles.item.itty_bitty.net.fish": "Fish captured",
   "subtitles.item.itty_bitty.net.tadpole": "Tadpole captured",
   "subtitles.item.itty_bitty.net.bug": "Bug captured",
   "subtitles.item.itty_bitty.net.silverfish": "Silverfish captured",
   "subtitles.item.itty_bitty.net.endermite": "Endermite captured",
   "subtitles.item.itty_bitty.net.fail": "Net fails",
+
+  "subtitles.item.itty_bitty.collected_mob.release_bug": "Bug released",
+  "subtitles.item.itty_bitty.collected_mob.release_silverfish": "Silverfish released",
+  "subtitles.item.itty_bitty.collected_mob.release_endermite": "Endermite released",
 
   "subtitles.entity.itty_bitty.fish.flop": "Fish flops",
   "subtitles.entity.itty_bitty.fish.hurt": "Fish hurts",

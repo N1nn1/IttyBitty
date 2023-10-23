@@ -96,5 +96,27 @@
 			"itty_bitty:item/net/fail3"
 		],
 		"subtitle": "subtitles.item.itty_bitty.net.fail"
+	},
+	"item.collected_mob.release_bug": {
+		"sounds": [
+			"itty_bitty:item/collected_mob/release_bug"
+		],
+		"subtitle": "subtitles.item.itty_bitty.collected_mob.release_bug"
+	},
+	"item.collected_mob.release_silverfish": {
+		"sounds": [
+			"itty_bitty:item/collected_mob/release_monster1",
+			"itty_bitty:item/collected_mob/release_monster2",
+			"itty_bitty:item/collected_mob/release_monster3"
+		],
+		"subtitle": "subtitles.item.itty_bitty.collected_mob.release_silverfish"
+	},
+	"item.collected_mob.release_endermite": {
+		"sounds": [
+			"itty_bitty:item/collected_mob/release_monster1",
+			"itty_bitty:item/collected_mob/release_monster2",
+			"itty_bitty:item/collected_mob/release_monster3"
+		],
+		"subtitle": "subtitles.item.itty_bitty.collected_mob.release_endermite"
 	}
 }
