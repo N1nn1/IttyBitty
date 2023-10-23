@@ -2,12 +2,12 @@ package com.ninni.itty_bitty.mixin;
 
 import com.ninni.itty_bitty.IttyBittyTags;
 import com.ninni.itty_bitty.block.BugBoxBlockEntity;
+import com.ninni.itty_bitty.entity.collectables.IttyBittyBugCollectables;
 import com.ninni.itty_bitty.registry.IttyBittyBlockEntityType;
 import com.ninni.itty_bitty.registry.IttyBittyItems;
 import com.ninni.itty_bitty.registry.IttyBittySoundEvents;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
@@ -16,9 +16,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.Targeting;
-import net.minecraft.world.entity.animal.Bee;
-import net.minecraft.world.entity.monster.Endermite;
-import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -103,24 +100,15 @@ public abstract class MobMixin extends LivingEntity implements Targeting {
         if (mob.hasCustomName()) {
             itemStack.setHoverName(mob.getCustomName());
         }
-
         mob.save(compoundTag);
-
-
         compoundTag.putFloat("Health", mob.getHealth());
     }
 
     private ItemStack getLiveBug(boolean bl) {
-        Mob that = (Mob) (Object) this;
-        if (that instanceof Endermite) {
-            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_ENDERMITE);
-            return new ItemStack(IttyBittyItems.LIVE_ENDERMITE);
-        } else if (that instanceof Silverfish) {
-            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_SILVERFISH);
-            return new ItemStack(IttyBittyItems.LIVE_SILVERFISH);
-        } else if (that instanceof Bee) {
-            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_BUG);
-            return new ItemStack(IttyBittyItems.LIVE_BEE);
+        IttyBittyBugCollectables type = IttyBittyBugCollectables.getByType(this.getType());
+        if (type != null) {
+            if (bl) this.playSound(type.getCollectSound());
+            return new ItemStack(type.getLiveItem());
         }
         return null;
     }

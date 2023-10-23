@@ -1,6 +1,6 @@
 package com.ninni.itty_bitty.mixin;
 
-import com.ninni.itty_bitty.IttyBittyFishCollectables;
+import com.ninni.itty_bitty.entity.collectables.IttyBittyFishCollectables;
 import com.ninni.itty_bitty.IttyBittyTags;
 import com.ninni.itty_bitty.client.gui.screen.BubbleBoxSlot;
 import com.ninni.itty_bitty.entity.variant.TetraVariant;

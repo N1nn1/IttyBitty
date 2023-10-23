@@ -1,4 +1,4 @@
-package com.ninni.itty_bitty;
+package com.ninni.itty_bitty.entity.collectables;
 
 import com.ninni.itty_bitty.registry.IttyBittyEntityType;
 import com.ninni.itty_bitty.registry.IttyBittyItems;

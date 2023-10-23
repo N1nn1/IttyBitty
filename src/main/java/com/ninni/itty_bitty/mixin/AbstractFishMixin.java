@@ -1,9 +1,8 @@
 package com.ninni.itty_bitty.mixin;
 
-import com.ninni.itty_bitty.IttyBittyFishCollectables;
+import com.ninni.itty_bitty.entity.collectables.IttyBittyFishCollectables;
 import com.ninni.itty_bitty.IttyBittyTags;
 import com.ninni.itty_bitty.block.BubbleBoxBlockEntity;
-import com.ninni.itty_bitty.entity.Tetra;
 import com.ninni.itty_bitty.registry.IttyBittyBlockEntityType;
 import com.ninni.itty_bitty.registry.IttyBittyItems;
 import com.ninni.itty_bitty.registry.IttyBittySoundEvents;
@@ -15,7 +14,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.*;
-import net.minecraft.world.entity.animal.frog.Tadpole;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;

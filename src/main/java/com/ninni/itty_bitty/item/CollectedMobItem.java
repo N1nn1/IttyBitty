@@ -1,6 +1,7 @@
 package com.ninni.itty_bitty.item;
 
-import com.ninni.itty_bitty.IttyBittyFishCollectables;
+import com.ninni.itty_bitty.entity.collectables.IttyBittyBugCollectables;
+import com.ninni.itty_bitty.entity.collectables.IttyBittyFishCollectables;
 import com.ninni.itty_bitty.entity.variant.TetraVariant;
 import com.ninni.itty_bitty.registry.IttyBittyEntityType;
 import com.ninni.itty_bitty.registry.IttyBittySoundEvents;
@@ -47,12 +48,13 @@ public class CollectedMobItem extends Item {
             ItemStack stack = useOnContext.getItemInHand();
 
             Mob bug = (Mob)type.create(useOnContext.getLevel());
+            IttyBittyBugCollectables type = IttyBittyBugCollectables.getByType(bug.getType());
             if (stack.hasCustomHoverName()) bug.setCustomName(stack.getHoverName());
             if (stack.hasTag()) {
                 bug.load(stack.getTag());
             }
             bug.moveTo(pos.getX(), pos.getY(), pos.getZ(), Objects.requireNonNull(useOnContext.getPlayer()).getYRot(), 0.0f);
-            useOnContext.getPlayer().playSound(IttyBittySoundEvents.RELEASE_BUG);
+            useOnContext.getPlayer().playSound(type.getReleaseSound());
             useOnContext.getLevel().addFreshEntity(bug);
             useOnContext.getPlayer().setItemInHand(useOnContext.getHand(), ItemStack.EMPTY);
             return InteractionResult.SUCCESS;
@@ -112,6 +114,10 @@ public class CollectedMobItem extends Item {
             int i = compoundTag.getInt("BucketVariantTag");
             list.add(Component.translatable("entity.itty_bitty.tetra.type." + TetraVariant.byId(i).getType()).withStyle(ChatFormatting.ITALIC, ChatFormatting.DARK_GRAY));
             list.add(Component.translatable("entity.itty_bitty.tetra.variant." + TetraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+        }
+
+        if ((compoundTag = itemStack.getTag()) != null && compoundTag.getInt("Age") < 0) {
+            list.add(Component.translatable("entity.itty_bitty.collected_mob.baby").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
         }
     }
 }
