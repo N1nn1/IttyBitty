@@ -1,0 +1,29 @@
+{
+  "parent": "itty_bitty:itty_bitty/obtain_net",
+  "criteria": {
+    "catch_bug": {
+      "trigger": "minecraft:catch_bug"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.itty_bitty.catch_bug.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "itty_bitty:live_bee"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.itty_bitty.catch_bug.title"
+    }
+  },
+  "requirements": [
+    [
+      "catch_bug"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

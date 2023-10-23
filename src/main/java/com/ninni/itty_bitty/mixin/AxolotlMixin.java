@@ -1,6 +1,7 @@
 package com.ninni.itty_bitty.mixin;
 
 import com.ninni.itty_bitty.IttyBittyTags;
+import com.ninni.itty_bitty.advancements.IttyBittyCriteriaTriggers;
 import com.ninni.itty_bitty.block.BubbleBoxBlockEntity;
 import com.ninni.itty_bitty.registry.IttyBittyBlockEntityType;
 import com.ninni.itty_bitty.registry.IttyBittyItems;
@@ -8,6 +9,7 @@ import com.ninni.itty_bitty.registry.IttyBittySoundEvents;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -74,6 +76,7 @@ public abstract class AxolotlMixin extends Animal implements LerpingModel, Varia
 
                         }
                     }
+                    if (player instanceof ServerPlayer serverPlayer) IttyBittyCriteriaTriggers.CATCH_FISH.trigger(serverPlayer);
                 }
             }
 

@@ -1,6 +1,7 @@
 package com.ninni.itty_bitty.mixin;
 
 import com.ninni.itty_bitty.IttyBittyTags;
+import com.ninni.itty_bitty.advancements.IttyBittyCriteriaTriggers;
 import com.ninni.itty_bitty.block.BugBoxBlockEntity;
 import com.ninni.itty_bitty.entity.collectables.IttyBittyBugCollectables;
 import com.ninni.itty_bitty.registry.IttyBittyBlockEntityType;
@@ -9,6 +10,7 @@ import com.ninni.itty_bitty.registry.IttyBittySoundEvents;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -72,6 +74,7 @@ public abstract class MobMixin extends LivingEntity implements Targeting {
                             cir.setReturnValue(InteractionResult.sidedSuccess(this.level().isClientSide));
 
                         }
+                        if (player instanceof ServerPlayer serverPlayer) IttyBittyCriteriaTriggers.CATCH_BUG.trigger(serverPlayer);
                     }
                 }
             }
@@ -82,6 +85,7 @@ public abstract class MobMixin extends LivingEntity implements Targeting {
                     saveDefaultDataToItemTag(that, output);
                     this.discard();
                     player.getInventory().add(output);
+                    if (player instanceof ServerPlayer serverPlayer) IttyBittyCriteriaTriggers.CATCH_BUG.trigger(serverPlayer);
                     cir.setReturnValue(InteractionResult.sidedSuccess(this.level().isClientSide));
                 } else {
                     this.playSound(IttyBittySoundEvents.COLLECT_FAIL);

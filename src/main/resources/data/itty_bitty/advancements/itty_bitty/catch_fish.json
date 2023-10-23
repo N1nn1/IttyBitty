@@ -1,0 +1,29 @@
+{
+  "parent": "itty_bitty:itty_bitty/obtain_net",
+  "criteria": {
+    "catch_fish": {
+      "trigger": "minecraft:catch_fish"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.itty_bitty.catch_fish.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "itty_bitty:live_tropical_fish"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.itty_bitty.catch_fish.title"
+    }
+  },
+  "requirements": [
+    [
+      "catch_fish"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

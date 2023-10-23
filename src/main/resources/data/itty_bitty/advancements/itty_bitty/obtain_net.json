@@ -20,7 +20,7 @@
       "translate": "advancements.itty_bitty.obtain_net.description"
     },
     "frame": "task",
-    "hidden": true,
+    "hidden": false,
     "icon": {
       "item": "itty_bitty:net"
     },
