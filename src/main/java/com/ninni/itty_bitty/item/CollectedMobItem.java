@@ -1,15 +1,14 @@
 package com.ninni.itty_bitty.item;
 
+import com.ninni.itty_bitty.IttyBittyFishCollectables;
 import com.ninni.itty_bitty.entity.variant.TetraVariant;
 import com.ninni.itty_bitty.registry.IttyBittyEntityType;
-import com.ninni.itty_bitty.registry.IttyBittyItems;
 import com.ninni.itty_bitty.registry.IttyBittySoundEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -67,32 +66,14 @@ public class CollectedMobItem extends Item {
         ItemStack output;
 
         if (itemStack2.is(Items.WATER_BUCKET) && itemStack.hasTag() && this.fish) {
+            IttyBittyFishCollectables type = IttyBittyFishCollectables.getByType(this.type);
 
-            if (this.type.equals(EntityType.COD)) {
-                output = new ItemStack(Items.COD_BUCKET);
-                player.playSound(SoundEvents.BUCKET_FILL_FISH);
-            } else if (this.type.equals(EntityType.SALMON)) {
-                output = new ItemStack(Items.SALMON_BUCKET);
-                player.playSound(SoundEvents.BUCKET_FILL_FISH);
-            } else if (this.type.equals(EntityType.TROPICAL_FISH)) {
-                output = new ItemStack(Items.TROPICAL_FISH_BUCKET);
-                player.playSound(SoundEvents.BUCKET_FILL_FISH);
-            } else if (this.type.equals(EntityType.PUFFERFISH)) {
-                output = new ItemStack(Items.PUFFERFISH_BUCKET);
-                player.playSound(SoundEvents.BUCKET_FILL_FISH);
-            } else if (this.type.equals(EntityType.TADPOLE)) {
-                output = new ItemStack(Items.TADPOLE_BUCKET);
-                player.playSound(SoundEvents.BUCKET_FILL_TADPOLE);
-            } else if (this.type.equals(EntityType.AXOLOTL)) {
-                output = new ItemStack(Items.AXOLOTL_BUCKET);
-                player.playSound(SoundEvents.BUCKET_FILL_AXOLOTL);
-            } else if (this.type.equals(IttyBittyEntityType.TETRA)) {
-                output = new ItemStack(IttyBittyItems.TETRA_BUCKET);
-                player.playSound(SoundEvents.BUCKET_FILL_FISH);
+            if (type != null) {
+                output = new ItemStack(type.getBucketItem());
+                player.playSound(type.getFillSound());
             } else {
                 throw new IncompatibleClassChangeError();
             }
-
 
             output.setTag(itemStack.getTag());
             slotAccess.set(output);
@@ -130,7 +111,7 @@ public class CollectedMobItem extends Item {
         if (this.type == IttyBittyEntityType.TETRA && (compoundTag = itemStack.getTag()) != null && compoundTag.contains("BucketVariantTag", 3)) {
             int i = compoundTag.getInt("BucketVariantTag");
             list.add(Component.translatable("entity.itty_bitty.tetra.type." + TetraVariant.byId(i).getType()).withStyle(ChatFormatting.ITALIC, ChatFormatting.DARK_GRAY));
-            list.add(Component.translatable("entity.itty_bitty.tetra.variant." + TetraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, TetraVariant.byId(i).getColor()));
+            list.add(Component.translatable("entity.itty_bitty.tetra.variant." + TetraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
         }
     }
 }

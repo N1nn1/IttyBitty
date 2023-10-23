@@ -13,6 +13,7 @@ public interface IttyBittyTags {
 
     //Item tags
     TagKey<Item> NETS = TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "nets"));
+    TagKey<Item> COLLECTABLE_FISH_BUCKETS = TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "collectable_fish_buckets"));
     TagKey<Item> LIVE_FISH = TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "live_fish"));
     TagKey<Item> LIVE_BUGS = TagKey.create(Registries.ITEM, new ResourceLocation(MOD_ID, "live_bugs"));
 

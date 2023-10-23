@@ -1,5 +1,6 @@
 package com.ninni.itty_bitty.mixin;
 
+import com.ninni.itty_bitty.IttyBittyFishCollectables;
 import com.ninni.itty_bitty.IttyBittyTags;
 import com.ninni.itty_bitty.block.BubbleBoxBlockEntity;
 import com.ninni.itty_bitty.entity.Tetra;
@@ -35,75 +36,58 @@ public abstract class AbstractFishMixin extends WaterAnimal implements Bucketabl
     public void collect(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
         ItemStack output;
 
-        if (this.getLiveFish(false) != null) {
+        this.getLiveFish(false);
+        for (ItemStack itemStack2 : player.getInventory().items) {
+            if (itemStack2.is(IttyBittyItems.BUBBLEBOX)) {
+                if (player.getMainHandItem().is(IttyBittyTags.NETS) && this.isAlive()) {
 
-            for (ItemStack itemStack2 : player.getInventory().items) {
-                if (itemStack2.is(IttyBittyItems.BUBBLEBOX)) {
-                    if (player.getMainHandItem().is(IttyBittyTags.NETS) && this.isAlive()) {
+                    CompoundTag compoundTag = BlockItem.getBlockEntityData(itemStack2);
 
-                        CompoundTag compoundTag = BlockItem.getBlockEntityData(itemStack2);
-
-                        if (compoundTag != null && compoundTag.contains(BubbleBoxBlockEntity.ITEMS_TAG)) {
-                            NonNullList<ItemStack> nonNullList = NonNullList.withSize(54, ItemStack.EMPTY);
-                            ContainerHelper.loadAllItems(compoundTag, nonNullList);
-                            for (int i = 0; i < nonNullList.size(); i++) {
-                                if (nonNullList.get(i).isEmpty()) {
-                                    output = getLiveFish(true);
-                                    this.saveToBucketTag(output);
-                                    this.discard();
-                                    nonNullList.set(i, output);
-                                    ContainerHelper.saveAllItems(compoundTag, nonNullList);
-                                    cir.setReturnValue(InteractionResult.sidedSuccess(this.level().isClientSide));
-                                    break;
-                                }
+                    if (compoundTag != null && compoundTag.contains(BubbleBoxBlockEntity.ITEMS_TAG)) {
+                        NonNullList<ItemStack> nonNullList = NonNullList.withSize(54, ItemStack.EMPTY);
+                        ContainerHelper.loadAllItems(compoundTag, nonNullList);
+                        for (int i = 0; i < nonNullList.size(); i++) {
+                            if (nonNullList.get(i).isEmpty()) {
+                                output = getLiveFish(true);
+                                this.saveToBucketTag(output);
+                                this.discard();
+                                nonNullList.set(i, output);
+                                ContainerHelper.saveAllItems(compoundTag, nonNullList);
+                                cir.setReturnValue(InteractionResult.sidedSuccess(this.level().isClientSide));
+                                break;
                             }
                         }
-                        if (compoundTag == null || !compoundTag.contains(BubbleBoxBlockEntity.ITEMS_TAG)) {
-                            CompoundTag compoundTag1 = new CompoundTag();
-                            NonNullList<ItemStack> nonNullList = NonNullList.withSize(54, ItemStack.EMPTY);
-                            output = getLiveFish(true);
-                            this.saveToBucketTag(output);
-                            this.discard();
-                            nonNullList.set(0, output);
-                            ContainerHelper.saveAllItems(compoundTag1, nonNullList);
-                            BlockItem.setBlockEntityData(itemStack2, IttyBittyBlockEntityType.BUBBLEBOX, compoundTag1);
-                            cir.setReturnValue(InteractionResult.sidedSuccess(this.level().isClientSide));
+                    }
+                    if (compoundTag == null || !compoundTag.contains(BubbleBoxBlockEntity.ITEMS_TAG)) {
+                        CompoundTag compoundTag1 = new CompoundTag();
+                        NonNullList<ItemStack> nonNullList = NonNullList.withSize(54, ItemStack.EMPTY);
+                        output = getLiveFish(true);
+                        this.saveToBucketTag(output);
+                        this.discard();
+                        nonNullList.set(0, output);
+                        ContainerHelper.saveAllItems(compoundTag1, nonNullList);
+                        BlockItem.setBlockEntityData(itemStack2, IttyBittyBlockEntityType.BUBBLEBOX, compoundTag1);
+                        cir.setReturnValue(InteractionResult.sidedSuccess(this.level().isClientSide));
 
-                        }
                     }
                 }
             }
+        }
 
-            if (!player.getInventory().hasAnyMatching(itemStack -> itemStack.is(IttyBittyItems.BUBBLEBOX)) && player.getMainHandItem().is(IttyBittyTags.NETS) && this.isAlive()) {
-                this.playSound(IttyBittySoundEvents.COLLECT_FAIL);
-                player.displayClientMessage(Component.translatable("net.bubblebox.missing"), true);
-                cir.setReturnValue(InteractionResult.sidedSuccess(this.level().isClientSide));
-            }
+        if (!player.getInventory().hasAnyMatching(itemStack -> itemStack.is(IttyBittyItems.BUBBLEBOX)) && player.getMainHandItem().is(IttyBittyTags.NETS) && this.isAlive()) {
+            this.playSound(IttyBittySoundEvents.COLLECT_FAIL);
+            player.displayClientMessage(Component.translatable("net.bubblebox.missing"), true);
+            cir.setReturnValue(InteractionResult.sidedSuccess(this.level().isClientSide));
         }
 
     }
 
 
     private ItemStack getLiveFish(boolean bl) {
-        AbstractFish that = (AbstractFish) (Object) this;
-        if (that instanceof Cod) {
-            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_FISH);
-            return new ItemStack(IttyBittyItems.LIVE_COD);
-        } else if (that instanceof Salmon) {
-            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_FISH);
-            return new ItemStack(IttyBittyItems.LIVE_SALMON);
-        } else if (that instanceof TropicalFish) {
-            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_FISH);
-            return new ItemStack(IttyBittyItems.LIVE_TROPICAL_FISH);
-        } else if (that instanceof Pufferfish) {
-            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_FISH);
-            return new ItemStack(IttyBittyItems.LIVE_PUFFERFISH);
-        } else if (that instanceof Tadpole) {
-            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_TADPOLE);
-            return new ItemStack(IttyBittyItems.LIVE_TADPOLE);
-        } else if (that instanceof Tetra) {
-            if (bl) this.playSound(IttyBittySoundEvents.COLLECT_FISH);
-            return new ItemStack(IttyBittyItems.LIVE_TETRA);
+        IttyBittyFishCollectables type = IttyBittyFishCollectables.getByType(this.getType());
+        if (type != null) {
+            if (bl) this.playSound(type.getCollectSound());
+            return new ItemStack(type.getLiveItem());
         }
         return null;
     }

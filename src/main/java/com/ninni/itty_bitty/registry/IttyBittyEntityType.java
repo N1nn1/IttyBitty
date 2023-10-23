@@ -27,7 +27,8 @@ public class IttyBittyEntityType {
     );
 
     static {
-        BiomeModifications.addSpawn(BiomeSelectors.tag(IttyBittyTags.TETRA_SPAWNS), MobCategory.WATER_CREATURE, IttyBittyEntityType.TETRA, 5, 3, 6);
+        //TODO THEY SPAWN WAY TOO MUCH
+        //BiomeModifications.addSpawn(BiomeSelectors.tag(IttyBittyTags.TETRA_SPAWNS), MobCategory.WATER_CREATURE, IttyBittyEntityType.TETRA, 5, 3, 6);
     }
 
     private static <T extends Entity> EntityType<T> register(String id, FabricEntityTypeBuilder<T> entityType) {

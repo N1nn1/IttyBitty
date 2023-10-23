@@ -1,15 +1,18 @@
 package com.ninni.itty_bitty.mixin;
 
+import com.ninni.itty_bitty.IttyBittyFishCollectables;
+import com.ninni.itty_bitty.IttyBittyTags;
+import com.ninni.itty_bitty.client.gui.screen.BubbleBoxSlot;
 import com.ninni.itty_bitty.entity.variant.TetraVariant;
 import com.ninni.itty_bitty.registry.IttyBittyEntityType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.BucketItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.MobBucketItem;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +39,32 @@ public abstract class MobBucketItemMixin extends BucketItem {
         if (this.type == IttyBittyEntityType.TETRA && (compoundTag = itemStack.getTag()) != null && compoundTag.contains("BucketVariantTag", 3)) {
             int i = compoundTag.getInt("BucketVariantTag");
             list.add(Component.translatable("entity.itty_bitty.tetra.type." + TetraVariant.byId(i).getType()).withStyle(ChatFormatting.ITALIC, ChatFormatting.DARK_GRAY));
-            list.add(Component.translatable("entity.itty_bitty.tetra.variant." + TetraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, TetraVariant.byId(i).getColor()));
+            list.add(Component.translatable("entity.itty_bitty.tetra.variant." + TetraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
         }
+    }
+
+    @Override
+    public boolean overrideStackedOnOther(ItemStack itemStack, Slot slot, ClickAction clickAction, Player player) {
+        ItemStack output;
+
+        if (itemStack.is(IttyBittyTags.COLLECTABLE_FISH_BUCKETS) && itemStack.hasTag() && slot instanceof BubbleBoxSlot && slot.getItem().isEmpty() && player.getInventory().getFreeSlot() != -1) {
+            IttyBittyFishCollectables type = IttyBittyFishCollectables.getByType(this.type);
+
+            if (type != null) {
+                output = new ItemStack(type.getLiveItem());
+                player.playSound(type.getEmptySound());
+            } else {
+                throw new IncompatibleClassChangeError();
+            }
+
+            output.setTag(itemStack.getTag());
+            slot.safeInsert(output);
+            itemStack.shrink(1);
+            player.addItem(Items.WATER_BUCKET.getDefaultInstance());
+            return true;
+        }
+
+
+        return super.overrideStackedOnOther(itemStack, slot, clickAction, player);
     }
 }

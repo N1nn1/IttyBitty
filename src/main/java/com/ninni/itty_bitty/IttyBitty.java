@@ -5,6 +5,7 @@ import com.ninni.itty_bitty.registry.*;
 import net.fabricmc.api.ModInitializer;
 
 //TODO recipe for Bubblebox doesnt take the bucket with it
+//TODO Golden Net cannot be found yet
 public class IttyBitty implements ModInitializer {
 	public static final String MOD_ID = "itty_bitty";
 
