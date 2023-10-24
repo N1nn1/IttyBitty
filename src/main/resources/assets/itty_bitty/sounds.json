@@ -27,8 +27,7 @@
 		"subtitle": "subtitles.entity.itty_bitty.fish.death"
 	},
 	"entity.fish.ambient": {
-		"sounds": [],
-		"subtitle": "subtitles.entity.itty_bitty.fish.ambient"
+		"sounds": []
 	},
 	"item.net.fish": {
 		"sounds": [

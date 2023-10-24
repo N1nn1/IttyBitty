@@ -47,7 +47,7 @@ public class TetraRenderer extends MobRenderer<Tetra, TetraModel<Tetra>> {
     }
 
     public ResourceLocation getTextureLocation(Tetra tetra) {
-        return new ResourceLocation(IttyBitty.MOD_ID, "textures/entity/tetra/tetra_"+ tetra.getVariant().getSerializedName() +".png");
+        return new ResourceLocation(IttyBitty.MOD_ID, "textures/entity/tetra/"+ tetra.getVariant().getSerializedName() +".png");
     }
 
     protected void setupRotations(Tetra tetra, PoseStack poseStack, float f, float g, float h) {

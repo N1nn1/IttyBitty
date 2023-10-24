@@ -3,6 +3,7 @@ package com.ninni.itty_bitty.registry;
 import com.ninni.itty_bitty.IttyBitty;
 import com.ninni.itty_bitty.IttyBittyTags;
 import com.ninni.itty_bitty.entity.Tetra;
+import com.ninni.itty_bitty.entity.TreeFrog;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
@@ -23,6 +24,17 @@ public class IttyBittyEntityType {
                     .spawnGroup(MobCategory.WATER_AMBIENT)
                     .spawnRestriction(SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Tetra::checkTetraSpawnRules)
                     .dimensions(EntityDimensions.scalable(0.3F, 0.3F))
+                    .trackRangeChunks(10)
+    );
+
+    public static final EntityType<TreeFrog> TREE_FROG = register(
+            "tree_frog",
+            FabricEntityTypeBuilder.createMob()
+                    .entityFactory(TreeFrog::new)
+                    .defaultAttributes(TreeFrog::createAttributes)
+                    .spawnGroup(MobCategory.CREATURE)
+                    .spawnRestriction(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, TreeFrog::checkAnimalSpawnRules)
+                    .dimensions(EntityDimensions.scalable(0.8F, 0.5F))
                     .trackRangeChunks(10)
     );
 

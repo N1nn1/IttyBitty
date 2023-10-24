@@ -4,6 +4,7 @@ import com.google.common.reflect.Reflection;
 import com.ninni.itty_bitty.client.gui.screen.BubbleBoxScreen;
 import com.ninni.itty_bitty.client.gui.screen.BugBoxScreen;
 import com.ninni.itty_bitty.client.renderer.entity.TetraRenderer;
+import com.ninni.itty_bitty.client.renderer.entity.TreeFrogRenderer;
 import com.ninni.itty_bitty.registry.IttyBittyEntityType;
 import com.ninni.itty_bitty.registry.IttyBittyModelLayers;
 import com.ninni.itty_bitty.registry.IttyBittyMenuType;
@@ -27,6 +28,7 @@ public class IttyBittyVanillaIntegration {
     private static void registerModelLayers() {
         Reflection.initialize(IttyBittyModelLayers.class);
         EntityRendererRegistry.register(IttyBittyEntityType.TETRA, TetraRenderer::new);
+        EntityRendererRegistry.register(IttyBittyEntityType.TREE_FROG, TreeFrogRenderer::new);
     }
 
     private static void registerScreens() {

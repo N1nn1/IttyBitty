@@ -19,7 +19,7 @@
   "itty_bitty.container.bubblebox": "Bubble-Box",
   "block.itty_bitty.bubblebox": "Bubble-Box",
 
-  "net.bubblebox.missing": "To catch Fish you need an empty Bubble-Box",
+  "net.bubblebox.missing": "To catch Aquatic Animals you need an empty Bubble-Box",
   "container.bubblebox.fullness": "%s/%s",
   "container.bubblebox.unknownContents": "???????",
 
@@ -43,6 +43,7 @@
   "entity.itty_bitty.collected_mob.baby": "Baby",
 
   "subtitles.item.itty_bitty.net.fish": "Fish captured",
+  "subtitles.item.itty_bitty.net.axolotl": "Axolotl captured",
   "subtitles.item.itty_bitty.net.tadpole": "Tadpole captured",
   "subtitles.item.itty_bitty.net.bug": "Bug captured",
   "subtitles.item.itty_bitty.net.silverfish": "Silverfish captured",
@@ -56,7 +57,6 @@
   "subtitles.entity.itty_bitty.fish.flop": "Fish flops",
   "subtitles.entity.itty_bitty.fish.hurt": "Fish hurts",
   "subtitles.entity.itty_bitty.fish.death": "Fish dies",
-  "subtitles.entity.itty_bitty.fish.ambient": "Swimming",
   
   "entity.itty_bitty.tetra": "Tetra",
   "item.itty_bitty.live_tetra": "Live Tetra",
