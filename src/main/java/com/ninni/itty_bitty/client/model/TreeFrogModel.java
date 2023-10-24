@@ -49,15 +49,21 @@ public class TreeFrogModel<T extends TreeFrog> extends HierarchicalModel<T> {
         this.animate(entity.croakAnimationState, TreeFrogAnimations.CROAKING, animationProgress);
         this.animate(entity.cleanAnimationState, TreeFrogAnimations.CLEAN, animationProgress);
 
-        float k = animationProgress - (float)(entity).tickCount;
-        float jumpRotation = Mth.sin((entity).getJumpCompletion(k) * (float)Math.PI);
-        this.body.y = Mth.cos(animationProgress * 0.1F) * 0.25F + 20.5F;
-        this.leftLeg.xRot = (jumpRotation * 50.0f) * ((float)Math.PI / 180);
-        this.rightLeg.xRot = (jumpRotation * 50.0f) * ((float)Math.PI / 180);
-        this.leftFoot.xRot = jumpRotation * 50.0f * ((float)Math.PI / 180);
-        this.rightFoot.xRot = jumpRotation * 50.0f * ((float)Math.PI / 180);
-        this.leftArm.xRot = (jumpRotation * -40.0f) * ((float)Math.PI / 180);
-        this.rightArm.xRot = (jumpRotation * -40.0f) * ((float)Math.PI / 180);
+        this.body.y = Mth.cos(animationProgress * 0.1F) * 0.25F + 21.5F;
+
+        float jumpRotation = Math.min(entity.airTicks * 0.2F, 1.0F);
+
+        this.body.xRot = -jumpRotation/4;
+        this.leftLeg.xRot = jumpRotation;
+        this.leftLeg.yRot = -jumpRotation/2;
+        this.rightLeg.xRot = jumpRotation;
+        this.rightLeg.yRot = jumpRotation/2;
+        this.leftFoot.xRot = jumpRotation;
+        this.rightFoot.xRot = jumpRotation;
+        this.leftArm.xRot -= jumpRotation;
+        this.leftArm.y -= jumpRotation;
+        this.rightArm.xRot -= jumpRotation;
+        this.rightArm.y -= jumpRotation;
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -68,8 +74,8 @@ public class TreeFrogModel<T extends TreeFrog> extends HierarchicalModel<T> {
                 BODY,
                 CubeListBuilder.create()
                         .texOffs(0, 0)
-                        .addBox(-3.0F, -2.0F, -5.0F, 6.0F, 4.0F, 8.0F),
-                PartPose.offset(0.0F, 20.5F, 0.0F)
+                        .addBox(-3.0F, -3.0F, -7.0F, 6.0F, 4.0F, 8.0F),
+                PartPose.offset(0.0F, 21.5F, 2.0F)
         );
 
         body.addOrReplaceChild(
@@ -77,7 +83,7 @@ public class TreeFrogModel<T extends TreeFrog> extends HierarchicalModel<T> {
                 CubeListBuilder.create()
                         .texOffs(0, 17)
                         .addBox(-3.0F, -1.0F, -1.0F, 6.0F, 2.0F, 2.0F, new CubeDeformation(-0.1F)),
-                PartPose.offset(0.0F, 1.0F, -4.0F)
+                PartPose.offset(0.0F, 0.0F, -6.0F)
         );
 
         body.addOrReplaceChild(
@@ -85,7 +91,7 @@ public class TreeFrogModel<T extends TreeFrog> extends HierarchicalModel<T> {
                 CubeListBuilder.create()
                         .texOffs(20, 0)
                         .addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F),
-                PartPose.offset(2.5F, -1.5F, -3.52F)
+                PartPose.offset(2.5F, -2.5F, -5.52F)
         );
 
         body.addOrReplaceChild(
@@ -95,12 +101,10 @@ public class TreeFrogModel<T extends TreeFrog> extends HierarchicalModel<T> {
                         .mirror()
                         .addBox(-1.5F, -1.5F, -1.5F, 3.0F, 3.0F, 3.0F)
                         .mirror(false),
-                PartPose.offset(-2.5F, -1.5F, -3.52F)
+                PartPose.offset(-2.5F, -2.5F, -5.52F)
         );
-
         partdefinition.addOrReplaceChild(
-                RIGHT_ARM,
-                CubeListBuilder.create()
+                RIGHT_ARM, CubeListBuilder.create()
                         .texOffs(10, 12)
                         .mirror()
                         .addBox(-0.5F, 0.0F, -1.5F, 3.0F, 2.0F, 3.0F)
@@ -109,16 +113,14 @@ public class TreeFrogModel<T extends TreeFrog> extends HierarchicalModel<T> {
         );
 
         partdefinition.addOrReplaceChild(
-                LEFT_ARM,
-                CubeListBuilder.create()
+                LEFT_ARM, CubeListBuilder.create()
                         .texOffs(10, 12)
                         .addBox(-2.5F, 0.0F, -1.5F, 3.0F, 2.0F, 3.0F),
                 PartPose.offset(3.0F, 22.0F, -2.0F)
         );
 
         PartDefinition rightLeg = partdefinition.addOrReplaceChild(
-                RIGHT_LEG,
-                CubeListBuilder.create()
+                RIGHT_LEG, CubeListBuilder.create()
                         .texOffs(0, 12)
                         .mirror()
                         .addBox(-2.0F, 0.0F, -1.0F, 3.0F, 2.0F, 2.0F)
@@ -127,30 +129,28 @@ public class TreeFrogModel<T extends TreeFrog> extends HierarchicalModel<T> {
         );
 
         rightLeg.addOrReplaceChild(
-                RIGHT_FOOT,
-                CubeListBuilder.create()
+                RIGHT_FOOT, CubeListBuilder.create()
                         .texOffs(-4, 0)
                         .mirror()
-                        .addBox(-4.0F, 0.0F, -4.0F, 4.0F, 0.0F, 4.0F)
+                        .addBox(-4.0F, -0.02F, -4.0F, 4.0F, 0.0F, 4.0F)
                         .mirror(false),
                 PartPose.offset(-1.0F, 2.0F, 0.0F)
         );
 
         PartDefinition leftLeg = partdefinition.addOrReplaceChild(
-                LEFT_LEG,
-                CubeListBuilder.create()
+                LEFT_LEG, CubeListBuilder.create()
                         .texOffs(0, 12)
                         .addBox(-1.0F, 0.0F, -1.0F, 3.0F, 2.0F, 2.0F),
                 PartPose.offset(3.0F, 22.0F, 3.0F)
         );
 
         leftLeg.addOrReplaceChild(
-                LEFT_FOOT,
-                CubeListBuilder.create()
+                LEFT_FOOT, CubeListBuilder.create()
                         .texOffs(-4, 0)
-                        .addBox(0.0F, 0.0F, -4.0F, 4.0F, 0.0F, 4.0F),
-                PartPose.offset(1.0F, 2.0F, 0.0F)
+                        .addBox(0.0F, 0.08F, -4.0F, 4.0F, 0.0F, 4.0F),
+                PartPose.offset(1.0F, 1.9F, 0.0F)
         );
+
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }

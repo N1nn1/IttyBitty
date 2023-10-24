@@ -12,21 +12,22 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.JumpControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.EnumSet;
 
 public class TreeFrog extends Animal implements VariantHolder<TreeFrogVariant> {
     public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(TreeFrog.class, EntityDataSerializers.INT);
@@ -36,27 +37,23 @@ public class TreeFrog extends Animal implements VariantHolder<TreeFrogVariant> {
     public final AnimationState blinkAnimationState = new AnimationState();
     public final AnimationState croakAnimationState = new AnimationState();
     public final AnimationState cleanAnimationState = new AnimationState();
-    private int jumpTicks;
-    private int jumpDuration;
-    private boolean wasOnGround;
-    private int jumpDelayTicks;
+    public int airTicks;
 
     public TreeFrog(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
-        this.jumpControl = new FrogJumpControl(this);
         this.moveControl = new FrogMoveControl(this);
-        this.setSpeedModifier(0.0);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(7, new TreeFrogCommonAnimationGoal(this));
-        this.goalSelector.addGoal(7, new TreeFrogRareAnimationGoal(this));
-        this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1));
+        this.goalSelector.addGoal(0, new TreeFrogFloatGoal(this));
+        this.goalSelector.addGoal(1, new TreeFrogRandomDirectionGoal(this));
+        this.goalSelector.addGoal(2, new TreeFrogKeepOnJumpingGoal(this));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(5, new TreeFrogCommonAnimationGoal(this));
+        this.goalSelector.addGoal(6, new TreeFrogRareAnimationGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -81,10 +78,13 @@ public class TreeFrog extends Animal implements VariantHolder<TreeFrogVariant> {
     @Override
     public void tick() {
         super.tick();
-
         if (this.getCommonAnimationCooldown() > 0) this.setCommonAnimationCooldown(this.getCommonAnimationCooldown()-1);
         if (this.getRareAnimationCooldown() > 0) this.setRareAnimationCooldown(this.getRareAnimationCooldown()-1);
+    }
 
+    @Override
+    protected int calculateFallDamage(float f, float g) {
+        return super.calculateFallDamage(f, g) - 15;
     }
 
     @Override
@@ -97,6 +97,14 @@ public class TreeFrog extends Animal implements VariantHolder<TreeFrogVariant> {
         super.onSyncedDataUpdated(entityDataAccessor);
     }
 
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (!this.isInWater()) {
+            if (this.onGround()) airTicks = 0;
+            else airTicks++;
+        }
+    }
 
     @Override
     protected void defineSynchedData() {
@@ -161,198 +169,153 @@ public class TreeFrog extends Animal implements VariantHolder<TreeFrogVariant> {
         this.entityData.set(VARIANT, variant.id());
     }
 
-    public void setSpeedModifier(double d) {
-        this.getNavigation().setSpeedModifier(d);
-        this.moveControl.setWantedPosition(this.moveControl.getWantedX(), this.moveControl.getWantedY(), this.moveControl.getWantedZ(), d);
-    }
-
-    @Override
-    protected float getJumpPower() {
-        Path path;
-        float f = 0.4f;
-        if (this.horizontalCollision || this.moveControl.hasWanted() && this.moveControl.getWantedY() > this.getY() + 0.5) {
-            f = 0.6f;
-        }
-        if ((path = this.navigation.getPath()) != null && !path.isDone()) {
-            Vec3 vec3 = path.getNextEntityPos(this);
-            if (vec3.y > this.getY() + 0.5) {
-                f = 0.6f;
-            }
-        }
-        if (this.moveControl.getSpeedModifier() <= 0.6) {
-            f = -0.1f;
-            jumpDuration = 0;
-        }
-        return f + this.getJumpBoostPower();
-    }
-
     @Override
     protected void jumpFromGround() {
-        super.jumpFromGround();
-        double d = this.moveControl.getSpeedModifier();
-        if (d > 0.0 && (this.getDeltaMovement().horizontalDistanceSqr()) < 0.01) {
-            this.moveRelative(0.1f, new Vec3(0.0, 0.0, 1.0));
-        }
-        if (!this.level().isClientSide) {
-            this.level().broadcastEntityEvent(this, (byte)1);
-        }
+        Vec3 vec3 = this.getDeltaMovement();
+        this.setDeltaMovement(vec3.x, this.getJumpPower(), vec3.z);
+        this.hasImpulse = true;
     }
 
-    public float getJumpCompletion(float f) {
-        if (this.jumpDuration == 0) {
-            return 0.0f;
-        }
-        return ((float)this.jumpTicks + f) / (float)this.jumpDuration;
-    }
-
-    @Override
-    public void setJumping(boolean bl) {
-        super.setJumping(bl);
-        if (bl) {
-            this.playSound(this.getJumpSound(), this.getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2f + 1.0f) * 0.8f);
-        }
-    }
-
-    public void startJumping() {
-        this.setJumping(true);
-        this.jumpDuration = 10;
-        this.jumpTicks = 0;
-    }
-
-    @Override
-    public void customServerAiStep() {
-        if (this.jumpDelayTicks > 0) {
-            --this.jumpDelayTicks;
-        }
-        if (this.onGround()) {
-            TreeFrog.FrogJumpControl frogJumpControl;
-            if (!this.wasOnGround) {
-                this.setJumping(false);
-                this.checkLandingDelay();
-            }
-            if (!(frogJumpControl = (TreeFrog.FrogJumpControl)this.jumpControl).wantJump()) {
-                if (this.moveControl.hasWanted() && this.jumpDelayTicks == 0) {
-                    Path path = this.navigation.getPath();
-                    Vec3 vec3 = new Vec3(this.moveControl.getWantedX(), this.moveControl.getWantedY(), this.moveControl.getWantedZ());
-                    if (path != null && !path.isDone()) {
-                        vec3 = path.getNextEntityPos(this);
-                    }
-                    this.facePoint(vec3.x, vec3.z);
-                    this.startJumping();
-                }
-            } else if (!frogJumpControl.canJump()) {
-                this.enableJumpControl();
-            }
-        }
-        this.wasOnGround = this.onGround();
-    }
-
-    private void facePoint(double d, double e) {
-        this.setYRot((float)(Mth.atan2(e - this.getZ(), d - this.getX()) * 57.2957763671875) - 90.0f);
-    }
-    private void enableJumpControl() {
-        ((TreeFrog.FrogJumpControl)this.jumpControl).setCanJump(true);
-    }
-
-    private void disableJumpControl() {
-        ((TreeFrog.FrogJumpControl)this.jumpControl).setCanJump(false);
-    }
-
-    private void setLandingDelay() {
-        this.jumpDelayTicks = this.moveControl.getSpeedModifier() < 2.2 ? 10 : 1;
-    }
-
-    private void checkLandingDelay() {
-        this.setLandingDelay();
-        this.disableJumpControl();
-    }
-    @Override
-    public void aiStep() {
-        super.aiStep();
-
-        if (this.jumpTicks != this.jumpDuration) {
-            ++this.jumpTicks;
-        } else if (this.jumpDuration != 0) {
-            this.jumpTicks = 0;
-            this.jumpDuration = 0;
-            this.setJumping(false);
-        }
-    }
-
-    @Override
-    public void handleEntityEvent(byte b) {
-        if (b == 1) {
-            this.spawnSprintParticle();
-            this.jumpDuration = 10;
-            this.jumpTicks = 0;
-        } else {
-            super.handleEntityEvent(b);
-        }
+    protected int getJumpDelay() {
+        return this.random.nextInt(20) + 10;
     }
 
     protected SoundEvent getJumpSound() {
         return SoundEvents.FROG_LONG_JUMP;
     }
 
-    public static class FrogJumpControl
-            extends JumpControl {
-        private final TreeFrog frog;
-        private boolean canJump;
-
-        public FrogJumpControl(TreeFrog frog) {
-            super(frog);
-            this.frog = frog;
-        }
-
-        public boolean wantJump() {
-            return this.jump;
-        }
-
-        public boolean canJump() {
-            return this.canJump;
-        }
-
-        public void setCanJump(boolean bl) {
-            this.canJump = bl;
-        }
-
-        @Override
-        public void tick() {
-            if (this.jump) {
-                this.frog.startJumping();
-                this.jump = false;
-            }
-        }
-    }
-
     static class FrogMoveControl
             extends MoveControl {
+        private float yRot;
+        private int jumpDelay;
         private final TreeFrog frog;
-        private double nextJumpSpeed;
+        private boolean isAggressive;
 
         public FrogMoveControl(TreeFrog frog) {
             super(frog);
             this.frog = frog;
+            this.yRot = 180.0f * frog.getYRot() / (float)Math.PI;
+        }
+
+        public void setDirection(float f, boolean bl) {
+            this.yRot = f;
+            this.isAggressive = bl;
+        }
+
+        public void setWantedMovement(double d) {
+            this.speedModifier = d;
+            this.operation = MoveControl.Operation.MOVE_TO;
         }
 
         @Override
         public void tick() {
-            if (this.frog.onGround() && !this.frog.jumping && !((TreeFrog.FrogJumpControl)this.frog.jumpControl).wantJump()) {
-                this.frog.setSpeedModifier(0.0);
-            } else if (this.hasWanted()) {
-                this.frog.setSpeedModifier(this.nextJumpSpeed);
+
+            this.mob.setYRot(this.rotlerp(this.mob.getYRot(), this.yRot, 90.0f));
+            this.mob.yHeadRot = this.mob.getYRot();
+            this.mob.yBodyRot = this.mob.getYRot();
+            if (this.operation != MoveControl.Operation.MOVE_TO) {
+                this.mob.setZza(0.0f);
+                return;
             }
-            super.tick();
+            this.operation = MoveControl.Operation.WAIT;
+            if (this.mob.onGround()) {
+                this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+                if (this.jumpDelay-- <= 0) {
+                    this.jumpDelay = this.frog.getJumpDelay();
+                    if (this.isAggressive) {
+                        this.jumpDelay /= 3;
+                    }
+                    this.frog.getJumpControl().jump();
+                    this.frog.playSound(this.frog.getJumpSound(), this.frog.getSoundVolume(), this.frog.getVoicePitch());
+                } else {
+                    this.frog.xxa = 0.0f;
+                    this.frog.zza = 0.0f;
+                    this.mob.setSpeed(0.0f);
+                }
+            } else {
+                this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+            }
+        }
+    }
+    static class TreeFrogFloatGoal extends Goal {
+        private final TreeFrog frog;
+
+        public TreeFrogFloatGoal(TreeFrog frog) {
+            this.frog = frog;
+            this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
+            frog.getNavigation().setCanFloat(true);
         }
 
         @Override
-        public void setWantedPosition(double d, double e, double f, double g) {
-            if (this.frog.isInWater()) {
-                g = 1.5;
+        public boolean canUse() {
+            return (this.frog.isInWater() || this.frog.isInLava()) && this.frog.getMoveControl() instanceof TreeFrog.FrogMoveControl;
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        @Override
+        public void tick() {
+            MoveControl moveControl;
+            if (this.frog.getRandom().nextFloat() < 0.8f) {
+                this.frog.getJumpControl().jump();
             }
-            super.setWantedPosition(d, e, f, g);
-            if (g > 0.0) {
-                this.nextJumpSpeed = g;
+            if ((moveControl = this.frog.getMoveControl()) instanceof TreeFrog.FrogMoveControl) {
+                TreeFrog.FrogMoveControl frogMoveControl = (TreeFrog.FrogMoveControl)moveControl;
+                frogMoveControl.setWantedMovement(1.2);
+            }
+        }
+    }
+    
+    static class TreeFrogRandomDirectionGoal extends Goal {
+        private final TreeFrog frog;
+        private float chosenDegrees;
+        private int nextRandomizeTime;
+
+        public TreeFrogRandomDirectionGoal(TreeFrog frog) {
+            this.frog = frog;
+            this.setFlags(EnumSet.of(Goal.Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            return this.frog.getTarget() == null && (this.frog.onGround() || this.frog.isInWater() || this.frog.isInLava() || this.frog.hasEffect(MobEffects.LEVITATION)) && this.frog.getMoveControl() instanceof TreeFrog.FrogMoveControl;
+        }
+
+        @Override
+        public void tick() {
+            MoveControl moveControl;
+            if (--this.nextRandomizeTime <= 0) {
+                this.nextRandomizeTime = this.adjustedTickDelay(40 + this.frog.getRandom().nextInt(60));
+                this.chosenDegrees = this.frog.getRandom().nextInt(360);
+            }
+            if ((moveControl = this.frog.getMoveControl()) instanceof TreeFrog.FrogMoveControl) {
+                TreeFrog.FrogMoveControl frogMoveControl = (TreeFrog.FrogMoveControl)moveControl;
+                frogMoveControl.setDirection(this.chosenDegrees, false);
+            }
+        }
+    }
+
+    static class TreeFrogKeepOnJumpingGoal extends Goal {
+        private final TreeFrog frog;
+
+        public TreeFrogKeepOnJumpingGoal(TreeFrog frog) {
+            this.frog = frog;
+            this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
+        }
+
+        @Override
+        public boolean canUse() {
+            return !this.frog.isPassenger();
+        }
+
+        @Override
+        public void tick() {
+            MoveControl moveControl = this.frog.getMoveControl();
+            if (moveControl instanceof FrogMoveControl frogMoveControl) {
+                frogMoveControl.setWantedMovement(1.0);
             }
         }
     }
