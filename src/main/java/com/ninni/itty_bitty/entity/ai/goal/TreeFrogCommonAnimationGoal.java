@@ -7,7 +7,7 @@ import net.minecraft.world.entity.Pose;
 public class TreeFrogCommonAnimationGoal extends TreeFrogBehaviorGoal {
 
     public TreeFrogCommonAnimationGoal(TreeFrog frog) {
-        super(frog, frog.getRandom().nextFloat() > 0.3f ? TreeFrogBehavior.BLINK : TreeFrogBehavior.CROAK);
+        super(frog, frog.getRandom().nextFloat() > 0.3f ? TreeFrogBehavior.CROAK : TreeFrogBehavior.BLINK);
     }
 
     @Override

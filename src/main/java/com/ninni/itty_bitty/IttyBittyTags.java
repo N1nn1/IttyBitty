@@ -19,4 +19,5 @@ public interface IttyBittyTags {
 
     //Biome tags
     TagKey<Biome> TETRA_SPAWNS = TagKey.create(Registries.BIOME, new ResourceLocation(MOD_ID, "tetra_spawns"));
+    TagKey<Biome> CORYDORA_SPAWNS = TagKey.create(Registries.BIOME, new ResourceLocation(MOD_ID, "corydora_spawns"));
 }

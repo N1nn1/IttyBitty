@@ -9,6 +9,6 @@ public class IttyBittyClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		IttyBittyVanillaIntegration.clientInit();
+		IttyBittyVanillaIntegration.Client.clientInit();
 	}
 }

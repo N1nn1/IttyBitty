@@ -3,6 +3,7 @@ package com.ninni.itty_bitty.mixin;
 import com.ninni.itty_bitty.entity.collectables.IttyBittyFishCollectables;
 import com.ninni.itty_bitty.IttyBittyTags;
 import com.ninni.itty_bitty.client.gui.screen.BubbleBoxSlot;
+import com.ninni.itty_bitty.entity.variant.CorydoraVariant;
 import com.ninni.itty_bitty.entity.variant.TetraVariant;
 import com.ninni.itty_bitty.registry.IttyBittyEntityType;
 import net.minecraft.ChatFormatting;
@@ -41,6 +42,11 @@ public abstract class MobBucketItemMixin extends BucketItem {
             list.add(Component.translatable("entity.itty_bitty.tetra.type." + TetraVariant.byId(i).getType()).withStyle(ChatFormatting.ITALIC, ChatFormatting.DARK_GRAY));
             list.add(Component.translatable("entity.itty_bitty.tetra.variant." + TetraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
         }
+
+        if (this.type == IttyBittyEntityType.CORYDORA && (compoundTag = itemStack.getTag()) != null && compoundTag.contains("BucketVariantTag", 3)) {
+            int i = compoundTag.getInt("BucketVariantTag");
+            list.add(Component.translatable("entity.itty_bitty.corydora.variant." + CorydoraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+        }
     }
 
     @Override
@@ -56,9 +62,8 @@ public abstract class MobBucketItemMixin extends BucketItem {
             } else {
                 throw new IncompatibleClassChangeError();
             }
-
             output.setTag(itemStack.getTag());
-            slot.safeInsert(output);
+            slot.set(output);
             itemStack.shrink(1);
             player.addItem(Items.WATER_BUCKET.getDefaultInstance());
             return true;

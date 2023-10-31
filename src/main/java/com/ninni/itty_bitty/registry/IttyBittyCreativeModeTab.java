@@ -18,6 +18,8 @@ public class IttyBittyCreativeModeTab {
                 output.accept(GOLDEN_NET);
                 output.accept(BUBBLEBOX);
                 output.accept(BUGBOX);
+                output.accept(CORYDORA_SPAWN_EGG);
+                output.accept(CORYDORA_BUCKET);
                 output.accept(TETRA_SPAWN_EGG);
                 output.accept(TETRA_BUCKET);
                 output.accept(TREE_FROG_SPAWN_EGG);

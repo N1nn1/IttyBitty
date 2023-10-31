@@ -57,7 +57,20 @@
   "subtitles.entity.itty_bitty.fish.flop": "Fish flops",
   "subtitles.entity.itty_bitty.fish.hurt": "Fish hurts",
   "subtitles.entity.itty_bitty.fish.death": "Fish dies",
-  
+
+  "entity.itty_bitty.corydora": "Corydora",
+  "item.itty_bitty.live_corydora": "Live Corydora",
+  "item.itty_bitty.corydora_spawn_egg": "Corydora Spawn Egg",
+  "item.itty_bitty.corydora_bucket": "Bucket of Corydora",
+
+  "entity.itty_bitty.corydora.variant.adolfoi": "Adolfoi",
+  "entity.itty_bitty.corydora.variant.bronze": "Bronze",
+  "entity.itty_bitty.corydora.variant.panda": "Panda",
+  "entity.itty_bitty.corydora.variant.peppered": "Peppered",
+  "entity.itty_bitty.corydora.variant.sterbai": "Sterbai",
+  "entity.itty_bitty.corydora.variant.venezuelan_black": "Venezuelan Black",
+  "entity.itty_bitty.corydora.variant.venezuelan_orange": "Venezuelan Orange",
+
   "entity.itty_bitty.tetra": "Tetra",
   "item.itty_bitty.live_tetra": "Live Tetra",
   "item.itty_bitty.tetra_spawn_egg": "Tetra Spawn Egg",

@@ -18,9 +18,10 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -100,9 +101,13 @@ public class TreeFrog extends Animal implements VariantHolder<TreeFrogVariant> {
     @Override
     public void aiStep() {
         super.aiStep();
+
         if (!this.isInWater()) {
-            if (this.onGround()) airTicks = 0;
-            else airTicks++;
+            if (this.onGround() || airTicks < 0) airTicks = 0;
+            else {
+                if (this.getDeltaMovement().y < -0.4) airTicks =6;
+                airTicks = this.getDeltaMovement().y > -0.15 ? airTicks+1 : airTicks-1;
+            }
         }
     }
 
@@ -112,7 +117,7 @@ public class TreeFrog extends Animal implements VariantHolder<TreeFrogVariant> {
         this.entityData.define(VARIANT, TreeFrogVariant.RED_EYED.id());
         this.entityData.define(BEHAVIOR, TreeFrogBehavior.IDLE.getName());
         this.entityData.define(COMMON_ANIMATION_COOLDOWN, 2 * 20 + random.nextInt(12 * 20));
-        this.entityData.define(RARE_ANIMATION_COOLDOWN, 30 * 20 + random.nextInt(60 * 2 * 20));
+        this.entityData.define(RARE_ANIMATION_COOLDOWN, 15 * 20 + random.nextInt(60 * 20));
     }
 
     @Override
@@ -122,6 +127,11 @@ public class TreeFrog extends Animal implements VariantHolder<TreeFrogVariant> {
         compoundTag.putString("Behavior", this.getBehavior());
         compoundTag.putInt("CommonAnimationCooldown", this.getCommonAnimationCooldown());
         compoundTag.putInt("RearUpCooldown", this.getRareAnimationCooldown());
+    }
+
+    @Override
+    public boolean onClimbable() {
+        return false;
     }
 
     @Override
@@ -140,7 +150,7 @@ public class TreeFrog extends Animal implements VariantHolder<TreeFrogVariant> {
         this.entityData.set(COMMON_ANIMATION_COOLDOWN, cooldown);
     }
     public void commonAnimationCooldown() {
-        this.entityData.set(COMMON_ANIMATION_COOLDOWN, 6 * 20 + random.nextInt(60 * 20));
+        this.entityData.set(COMMON_ANIMATION_COOLDOWN, 6 * 20 + random.nextInt(20 * 20));
     }
 
     public int getRareAnimationCooldown() {
@@ -177,7 +187,7 @@ public class TreeFrog extends Animal implements VariantHolder<TreeFrogVariant> {
     }
 
     protected int getJumpDelay() {
-        return this.random.nextInt(20) + 10;
+        return this.random.nextInt(30) + 20;
     }
 
     protected SoundEvent getJumpSound() {

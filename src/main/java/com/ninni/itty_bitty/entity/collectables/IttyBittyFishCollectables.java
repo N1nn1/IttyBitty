@@ -17,6 +17,7 @@ public enum IttyBittyFishCollectables {
     TROPICAL_FISH(EntityType.TROPICAL_FISH, IttyBittyItems.LIVE_TROPICAL_FISH, Items.TROPICAL_FISH_BUCKET, SoundEvents.BUCKET_FILL_FISH, SoundEvents.BUCKET_EMPTY_FISH, IttyBittySoundEvents.COLLECT_FISH),
     AXOLOTL(EntityType.AXOLOTL, IttyBittyItems.LIVE_AXOLOTL, Items.AXOLOTL_BUCKET, SoundEvents.BUCKET_FILL_AXOLOTL, SoundEvents.BUCKET_EMPTY_AXOLOTL, IttyBittySoundEvents.COLLECT_AXOLOTL),
     TADPOLE(EntityType.TADPOLE, IttyBittyItems.LIVE_TADPOLE, Items.TADPOLE_BUCKET, SoundEvents.BUCKET_FILL_TADPOLE, SoundEvents.BUCKET_EMPTY_TADPOLE, IttyBittySoundEvents.COLLECT_TADPOLE),
+    CORYDORA(IttyBittyEntityType.CORYDORA, IttyBittyItems.LIVE_CORYDORA, IttyBittyItems.CORYDORA_BUCKET, SoundEvents.BUCKET_FILL_FISH, SoundEvents.BUCKET_EMPTY_FISH, IttyBittySoundEvents.COLLECT_FISH),
     TETRA(IttyBittyEntityType.TETRA, IttyBittyItems.LIVE_TETRA, IttyBittyItems.TETRA_BUCKET, SoundEvents.BUCKET_FILL_FISH, SoundEvents.BUCKET_EMPTY_FISH, IttyBittySoundEvents.COLLECT_FISH);
 
 
@@ -67,6 +68,7 @@ public enum IttyBittyFishCollectables {
         else if (type == EntityType.TROPICAL_FISH ) return IttyBittyFishCollectables.TROPICAL_FISH;
         else if (type == EntityType.AXOLOTL ) return IttyBittyFishCollectables.AXOLOTL;
         else if (type == EntityType.TADPOLE ) return IttyBittyFishCollectables.TADPOLE;
+        else if (type == IttyBittyEntityType.CORYDORA ) return IttyBittyFishCollectables.CORYDORA;
         else if (type == IttyBittyEntityType.TETRA ) return IttyBittyFishCollectables.TETRA;
         else return null;
     }

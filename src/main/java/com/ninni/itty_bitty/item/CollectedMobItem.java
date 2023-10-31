@@ -2,6 +2,7 @@ package com.ninni.itty_bitty.item;
 
 import com.ninni.itty_bitty.entity.collectables.IttyBittyBugCollectables;
 import com.ninni.itty_bitty.entity.collectables.IttyBittyFishCollectables;
+import com.ninni.itty_bitty.entity.variant.CorydoraVariant;
 import com.ninni.itty_bitty.entity.variant.TetraVariant;
 import com.ninni.itty_bitty.registry.IttyBittyEntityType;
 import com.ninni.itty_bitty.registry.IttyBittySoundEvents;
@@ -114,6 +115,10 @@ public class CollectedMobItem extends Item {
             int i = compoundTag.getInt("BucketVariantTag");
             list.add(Component.translatable("entity.itty_bitty.tetra.type." + TetraVariant.byId(i).getType()).withStyle(ChatFormatting.ITALIC, ChatFormatting.DARK_GRAY));
             list.add(Component.translatable("entity.itty_bitty.tetra.variant." + TetraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+        }
+        if (this.type == IttyBittyEntityType.CORYDORA && (compoundTag = itemStack.getTag()) != null && compoundTag.contains("BucketVariantTag", 3)) {
+            int i = compoundTag.getInt("BucketVariantTag");
+            list.add(Component.translatable("entity.itty_bitty.corydora.variant." + CorydoraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
         }
 
         if ((compoundTag = itemStack.getTag()) != null && compoundTag.getInt("Age") < 0) {

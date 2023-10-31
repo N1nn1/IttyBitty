@@ -1,5 +1,6 @@
 package com.ninni.itty_bitty.registry;
 
+import com.ninni.itty_bitty.client.model.CorydoraModel;
 import com.ninni.itty_bitty.client.model.TetraModel;
 import com.ninni.itty_bitty.client.model.TreeFrogModel;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
@@ -10,6 +11,7 @@ import static com.ninni.itty_bitty.IttyBitty.MOD_ID;
 
 public interface IttyBittyModelLayers {
 
+    ModelLayerLocation CORYDORA = main("corydora", CorydoraModel::createBodyLayer);
     ModelLayerLocation TETRA_TORPEDO = main("tetra_torpedo", TetraModel::createTorpedoBodyLayer);
     ModelLayerLocation TETRA_DINNERPLATE = main("tetra_dinnerplate", TetraModel::createDinnerplateBodyLayer);
     ModelLayerLocation TETRA_ROCKET = main("tetra_rocket", TetraModel::createRocketBodyLayer);
