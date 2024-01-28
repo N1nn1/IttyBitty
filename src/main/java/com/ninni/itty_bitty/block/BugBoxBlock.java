@@ -50,17 +50,13 @@ public class BugBoxBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
-        }
-        if (player.isSpectator()) {
-            return InteractionResult.CONSUME;
-        }
+        if (player.isSpectator()) return InteractionResult.CONSUME;
+
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (blockEntity instanceof BugBoxBlockEntity bugBoxBlockEntity) {
             if (BugBoxBlock.canOpen(level, blockPos)) {
+                if (level.isClientSide) return InteractionResult.SUCCESS;
                 player.openMenu(bugBoxBlockEntity);
-                PiglinAi.angerNearbyPiglins(player, true);
             }
             return InteractionResult.CONSUME;
         }

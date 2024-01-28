@@ -1,5 +1,7 @@
 package com.ninni.itty_bitty.block;
 
+import com.ninni.itty_bitty.entity.collectables.IttyBittyFishCollectables;
+import com.ninni.itty_bitty.item.CollectedMobItem;
 import com.ninni.itty_bitty.registry.IttyBittyBlockEntityType;
 import com.ninni.itty_bitty.registry.IttyBittyItems;
 import net.minecraft.ChatFormatting;
@@ -10,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
@@ -18,10 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.BundleItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -51,20 +51,41 @@ public class BubbleBoxBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
-        }
-        if (player.isSpectator()) {
-            return InteractionResult.CONSUME;
-        }
+        if (player.isSpectator()) return InteractionResult.CONSUME;
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
+
         if (blockEntity instanceof BubbleBoxBlockEntity bubbleBoxBlockEntity) {
-            if (BubbleBoxBlock.canOpen(level, blockPos)) {
+
+            if (player.getItemInHand(interactionHand).getItem() == Items.WATER_BUCKET) {
+                ItemStack output;
+
+                for (ItemStack item : bubbleBoxBlockEntity.getItems()) {
+                    if (item.hasTag() && item.getItem() instanceof CollectedMobItem mobItem) {
+                        IttyBittyFishCollectables type = IttyBittyFishCollectables.getByType(mobItem.type);
+
+                        if (type != null) {
+                            output = new ItemStack(type.getBucketItem());
+                            level.playSound(null, blockPos, type.getFillSound(), SoundSource.BLOCKS, 1, 1);
+                        } else {
+                            throw new IncompatibleClassChangeError();
+                        }
+
+                        output.setTag(item.getTag());
+                        player.getItemInHand(interactionHand).shrink(1);
+                        item.shrink(1);
+                        player.addItem(output);
+                        break;
+                    }
+                }
+                return InteractionResult.SUCCESS;
+
+            } else if (BubbleBoxBlock.canOpen(level, blockPos)) {
+                if (level.isClientSide) return InteractionResult.SUCCESS;
                 player.openMenu(bubbleBoxBlockEntity);
-                PiglinAi.angerNearbyPiglins(player, true);
             }
             return InteractionResult.CONSUME;
         }
+
         return InteractionResult.PASS;
     }
 
@@ -74,8 +95,8 @@ public class BubbleBoxBlock extends BaseEntityBlock {
         double e = blockPos.getY() + 1;
         double f = blockPos.getZ();
         //if (blockState.getValue(OPEN) && randomSource.nextInt(2) == 0) {
-            //TODO replace them bubble particle
-            //level.addAlwaysVisibleParticle(ParticleTypes.FISHING, d + 0.5 + randomSource.nextFloat()/4, e, f + 0.5 + randomSource.nextFloat()/4, randomSource.nextInt(-1, 1)/32f, randomSource.nextFloat()/32f, randomSource.nextInt(-1, 1)/32f);
+        //TODO replace them bubble particle
+        //level.addAlwaysVisibleParticle(ParticleTypes.FISHING, d + 0.5 + randomSource.nextFloat()/4, e, f + 0.5 + randomSource.nextFloat()/4, randomSource.nextInt(-1, 1)/32f, randomSource.nextFloat()/32f, randomSource.nextInt(-1, 1)/32f);
         //}
     }
 

@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class CollectedMobItem extends Item {
-    private final EntityType<?> type;
-    private final boolean fish;
+    public final EntityType<?> type;
+    public final boolean fish;
 
     public CollectedMobItem(EntityType<?> entityType, boolean fish, Properties properties) {
         super(properties);
@@ -54,7 +54,7 @@ public class CollectedMobItem extends Item {
             if (stack.hasTag()) {
                 bug.load(stack.getTag());
             }
-            bug.moveTo(pos.getX(), pos.getY(), pos.getZ(), Objects.requireNonNull(useOnContext.getPlayer()).getYRot(), 0.0f);
+            bug.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, Objects.requireNonNull(useOnContext.getPlayer()).getYRot(), 0.0f);
             useOnContext.getPlayer().playSound(type.getReleaseSound());
             useOnContext.getLevel().addFreshEntity(bug);
             useOnContext.getPlayer().setItemInHand(useOnContext.getHand(), ItemStack.EMPTY);

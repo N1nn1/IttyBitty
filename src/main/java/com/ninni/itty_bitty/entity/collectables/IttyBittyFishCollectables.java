@@ -62,14 +62,14 @@ public enum IttyBittyFishCollectables {
     }
 
     public static IttyBittyFishCollectables getByType(EntityType type) {
-        if (type == EntityType.COD ) return IttyBittyFishCollectables.COD;
-        else if (type == EntityType.SALMON ) return IttyBittyFishCollectables.SALMON;
-        else if (type == EntityType.PUFFERFISH ) return IttyBittyFishCollectables.PUFFERFISH;
-        else if (type == EntityType.TROPICAL_FISH ) return IttyBittyFishCollectables.TROPICAL_FISH;
-        else if (type == EntityType.AXOLOTL ) return IttyBittyFishCollectables.AXOLOTL;
-        else if (type == EntityType.TADPOLE ) return IttyBittyFishCollectables.TADPOLE;
-        else if (type == IttyBittyEntityType.CORYDORA ) return IttyBittyFishCollectables.CORYDORA;
-        else if (type == IttyBittyEntityType.TETRA ) return IttyBittyFishCollectables.TETRA;
+        if (type == EntityType.COD) return IttyBittyFishCollectables.COD;
+        else if (type == EntityType.SALMON) return IttyBittyFishCollectables.SALMON;
+        else if (type == EntityType.PUFFERFISH) return IttyBittyFishCollectables.PUFFERFISH;
+        else if (type == EntityType.TROPICAL_FISH) return IttyBittyFishCollectables.TROPICAL_FISH;
+        else if (type == EntityType.AXOLOTL) return IttyBittyFishCollectables.AXOLOTL;
+        else if (type == EntityType.TADPOLE) return IttyBittyFishCollectables.TADPOLE;
+        else if (type == IttyBittyEntityType.CORYDORA) return IttyBittyFishCollectables.CORYDORA;
+        else if (type == IttyBittyEntityType.TETRA) return IttyBittyFishCollectables.TETRA;
         else return null;
     }
 }

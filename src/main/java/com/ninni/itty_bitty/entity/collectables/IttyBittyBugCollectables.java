@@ -42,9 +42,9 @@ public enum IttyBittyBugCollectables {
     }
 
     public static IttyBittyBugCollectables getByType(EntityType type) {
-        if (type == EntityType.SILVERFISH ) return IttyBittyBugCollectables.SILVERFISH;
-        else if (type == EntityType.ENDERMITE ) return IttyBittyBugCollectables.ENDERMITE;
-        else if (type == EntityType.BEE ) return IttyBittyBugCollectables.BEE;
+        if (type == EntityType.SILVERFISH) return IttyBittyBugCollectables.SILVERFISH;
+        else if (type == EntityType.ENDERMITE) return IttyBittyBugCollectables.ENDERMITE;
+        else if (type == EntityType.BEE) return IttyBittyBugCollectables.BEE;
         else return null;
     }
 }

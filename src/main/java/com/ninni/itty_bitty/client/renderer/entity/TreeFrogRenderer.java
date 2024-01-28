@@ -1,5 +1,6 @@
 package com.ninni.itty_bitty.client.renderer.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.ninni.itty_bitty.IttyBitty;
 import com.ninni.itty_bitty.client.model.TreeFrogModel;
 import com.ninni.itty_bitty.entity.TreeFrog;
@@ -28,5 +29,10 @@ public class TreeFrogRenderer extends MobRenderer<TreeFrog, TreeFrogModel<TreeFr
 
     public ResourceLocation getTextureLocation(TreeFrog frog) {
         return new ResourceLocation(IttyBitty.MOD_ID, "textures/entity/tree_frog/"+ frog.getVariant().getSerializedName() +".png");
+    }
+
+    @Override
+    protected void scale(TreeFrog livingEntity, PoseStack poseStack, float f) {
+        super.scale(livingEntity, poseStack, 2);
     }
 }
