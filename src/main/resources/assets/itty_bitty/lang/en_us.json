@@ -2,7 +2,7 @@
   "itty_bitty.item_group": "Itty Bitty",
 
   "advancements.itty_bitty.root.title": "Itty Bitty",
-  "advancements.itty_bitty.root.description": "Less Cumbersome Commitment to Critter Collecting",
+  "advancements.itty_bitty.root.description": "Less cumbersome commitment to critter collecting",
   "advancements.itty_bitty.obtain_net.title": "Gotta Catch 'Em All!",
   "advancements.itty_bitty.obtain_net.description": "Obtain a Net",
   "advancements.itty_bitty.catch_bug.title": "Creepy Crawlies",
@@ -19,14 +19,14 @@
   "itty_bitty.container.bubblebox": "Bubble-Box",
   "block.itty_bitty.bubblebox": "Bubble-Box",
 
-  "net.bubblebox.missing": "To catch Aquatic Animals you need an empty Bubble-Box",
+  "net.bubblebox.missing": "To catch aquatic animals you need an empty Bubble-Box",
   "container.bubblebox.fullness": "%s/%s",
   "container.bubblebox.unknownContents": "???????",
 
   "itty_bitty.container.bugbox": "Bug-Box",
   "block.itty_bitty.bugbox": "Bug-Box",
 
-  "net.inventory.full": "Out of Inventory space",
+  "net.inventory.full": "Out of inventory space",
   "container.bugbox.fullness": "%s/%s",
   "container.bugbox.unknownContents": "???????",
 
@@ -99,4 +99,3 @@
   "entity.itty_bitty.tetra.variant.emperor": "Emperor",
   "entity.itty_bitty.tetra.variant.rainbow": "Rainbow",
   "entity.itty_bitty.tetra.variant.buenos_aires": "Buenos Aires"
-}

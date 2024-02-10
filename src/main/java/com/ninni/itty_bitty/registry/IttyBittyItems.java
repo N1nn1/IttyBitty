@@ -26,8 +26,6 @@ public class IttyBittyItems {
     public static final Item TETRA_SPAWN_EGG = register("tetra_spawn_egg", new SpawnEggItem(IttyBittyEntityType.TETRA, 0xD8422E, 0x0EF9F4, new Item.Properties()));
     public static final Item TETRA_BUCKET = register("tetra_bucket", new MobBucketItem(IttyBittyEntityType.TETRA, Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().stacksTo(1)));
 
-    public static final Item TREE_FROG_SPAWN_EGG = register("tree_frog_spawn_egg", new SpawnEggItem(IttyBittyEntityType.TREE_FROG, 0x8FD750, 0xDE0F0F, new Item.Properties()));
-
     public static final Item LIVE_COD = register("live_cod", new CollectedMobItem(EntityType.COD, true, new Item.Properties().stacksTo(1)));
     public static final Item LIVE_SALMON = register("live_salmon", new CollectedMobItem(EntityType.SALMON, true, new Item.Properties().stacksTo(1)));
     public static final Item LIVE_PUFFERFISH = register("live_pufferfish", new CollectedMobItem(EntityType.PUFFERFISH, true, new Item.Properties().stacksTo(1)));

@@ -22,7 +22,6 @@ public class IttyBittyCreativeModeTab {
                 output.accept(CORYDORA_BUCKET);
                 output.accept(TETRA_SPAWN_EGG);
                 output.accept(TETRA_BUCKET);
-                output.accept(TREE_FROG_SPAWN_EGG);
             }).build()
     );
 

@@ -8,10 +8,10 @@
     "MobBucketItemMixin",
     "MobMixin"
   ],
-  "injectors": {
-    "defaultRequire": 1
-  },
   "client": [
     "MultiPlayerGameModeMixin"
-  ]
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

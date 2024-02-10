@@ -1,5 +1,7 @@
 package com.ninni.itty_bitty.entity;
 
+import com.mojang.datafixers.DataFixUtils;
+import com.ninni.itty_bitty.entity.common.IttyBittySchoolingFish;
 import com.ninni.itty_bitty.entity.variant.TetraVariant;
 import com.ninni.itty_bitty.registry.IttyBittyItems;
 import com.ninni.itty_bitty.registry.IttyBittySoundEvents;
@@ -10,7 +12,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -21,6 +22,9 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.TropicalFish;
 import net.minecraft.world.entity.animal.WaterAnimal;
@@ -31,12 +35,17 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
-public class Tetra extends AbstractSchoolingFish {
+import java.util.List;
+import java.util.function.Predicate;
+
+public class Tetra extends IttyBittySchoolingFish {
     public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(Tetra.class, EntityDataSerializers.INT);
     public static final String BUCKET_VARIANT_TAG = "BucketVariantTag";
 
-    public Tetra(EntityType<? extends AbstractSchoolingFish> entityType, Level level) {
+    public Tetra(EntityType<? extends IttyBittySchoolingFish> entityType, Level level) {
         super(entityType, level);
+        this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 2F, 0.1F, true);
+        this.lookControl = new SmoothSwimmingLookControl(this, 10);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -47,21 +56,29 @@ public class Tetra extends AbstractSchoolingFish {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.goalSelector.addGoal(1, new SchoolingGoal(this));
     }
 
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
-        if (mobSpawnType != MobSpawnType.BUCKET) {
-            TetraVariant[] variants = TetraVariant.values();
-            TetraVariant variant = Util.getRandom(variants, serverLevelAccessor.getRandom());
-            this.setVariant(variant);
-        }
         if (mobSpawnType == MobSpawnType.BUCKET && compoundTag != null && compoundTag.contains(BUCKET_VARIANT_TAG, 3)) {
             this.setVariant(TetraVariant.byId(compoundTag.getInt(BUCKET_VARIANT_TAG)));
-            return spawnGroupData;
+        } else {
+
+            TetraVariant variant;
+
+            if (spawnGroupData instanceof Tetra.TetraGroupData) {
+                Tetra.TetraGroupData groupData = (Tetra.TetraGroupData)spawnGroupData;
+                variant = groupData.variant;
+            } else {
+                variant = Util.getRandom(TetraVariant.values(), serverLevelAccessor.getRandom());
+                spawnGroupData = new Tetra.TetraGroupData(variant);
+            }
+
+            this.setVariant(variant);
         }
-        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+        return spawnGroupData;
     }
 
 
@@ -137,5 +154,66 @@ public class Tetra extends AbstractSchoolingFish {
     @Override
     protected SoundEvent getFlopSound() {
         return IttyBittySoundEvents.FISH_FLOP;
+    }
+
+
+    private static class TetraGroupData implements SpawnGroupData {
+        final TetraVariant variant;
+
+        TetraGroupData(TetraVariant variant) {
+            this.variant = variant;
+        }
+    }
+
+    public static class SchoolingGoal extends Goal {
+        private final Tetra tetra;
+        private int timeToRecalcPath;
+        private int nextStartTick;
+
+        public SchoolingGoal(Tetra schoolingFish) {
+            this.tetra = schoolingFish;
+            this.nextStartTick = this.nextStartTick(schoolingFish);
+        }
+
+        protected int nextStartTick(Tetra schoolingFish) {
+            return reducedTickDelay(200 + schoolingFish.getRandom().nextInt(200) % 20);
+        }
+
+        public boolean canUse() {
+            if (this.tetra.hasFollowers()) {
+                return false;
+            } else if (this.tetra.isFollower()) {
+                return true;
+            } else if (this.nextStartTick > 0) {
+                --this.nextStartTick;
+                return false;
+            } else {
+                this.nextStartTick = this.nextStartTick(this.tetra);
+                Predicate<Tetra> predicate = (schoolingFishx) -> (schoolingFishx.canBeFollowed() || !schoolingFishx.isFollower()) && schoolingFishx.getVariant() == this.tetra.getVariant();
+                List<? extends Tetra> list = this.tetra.level().getEntitiesOfClass(Tetra.class, this.tetra.getBoundingBox().inflate(8.0, 8.0, 8.0), predicate);
+                Tetra tetra1 = DataFixUtils.orElse(list.stream().filter(Tetra::canBeFollowed).findAny(), this.tetra);
+                tetra1.addFollowers(list.stream().filter((schoolingFishx) -> !schoolingFishx.isFollower()));
+                return this.tetra.isFollower();
+            }
+        }
+
+        public boolean canContinueToUse() {
+            return this.tetra.isFollower() && this.tetra.inRangeOfLeader();
+        }
+
+        public void start() {
+            this.timeToRecalcPath = 0;
+        }
+
+        public void stop() {
+            this.tetra.stopFollowing();
+        }
+
+        public void tick() {
+            if (--this.timeToRecalcPath <= 0) {
+                this.timeToRecalcPath = this.adjustedTickDelay(10);
+                this.tetra.pathToLeader();
+            }
+        }
     }
 }

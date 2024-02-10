@@ -188,9 +188,13 @@ public class TetraModel<T extends Tetra> extends HierarchicalModel<T> {
 		float degree = 2f;
 		float pi = ((float)Math.PI);
 
+		this.body.xRot = headPitch * 0.017453292F;
+		this.body.yRot = headPitch * 0.017453292F;
+
 		if (entity.getBodyType() == "dinnerplate") {
 			this.rightFin.zRot = 0;
 			this.leftFin.zRot = 0;
+			body.xRot -= 0.7854F;
 			this.leftFin.yRot = Mth.cos(animationProgress * speed * 0.4F + 1f) * degree * 0.8F * 0.25F + 0.8F;
 			this.rightFin.yRot = Mth.cos(animationProgress * speed * 0.4F + 1f + pi) * degree * 0.8F * 0.25F - 0.8F;
 			this.tail.yRot = Mth.cos(limbAngle * 1.2f * speed + pi) * degree * 0.8F * limbDistance;
