@@ -12,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.TropicalFish;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.HashMap;
@@ -25,6 +24,22 @@ public class IttyBittyTooltipUtil {
 
     public static void ittyBittyTooltips(ItemStack itemStack, EntityType<?> type, List<Component> list, boolean isCollectedItem) {
         CompoundTag compoundTag;
+
+        if ((compoundTag = itemStack.getTag()) != null && compoundTag.contains("BucketVariantTag", 3)) {
+            int i = compoundTag.getInt("BucketVariantTag");
+
+            if (type == IttyBittyEntityType.TETRA) {
+                list.add(Component.translatable("entity.itty_bitty.tetra.type." + TetraVariant.byId(i).getType()).withStyle(ChatFormatting.ITALIC, ChatFormatting.DARK_GRAY));
+                list.add(Component.translatable("entity.itty_bitty.tetra.variant." + TetraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+                addScientificName(list, TetraVariant.byId(i).getScientificName());
+            }
+
+            if (type == IttyBittyEntityType.CORYDORA) {
+                list.add(Component.translatable("entity.itty_bitty.corydora.variant." + CorydoraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+                addScientificName(list, CorydoraVariant.byId(i).getScientificName());
+            }
+
+        }
 
         if (isCollectedItem) {
             if ((compoundTag = itemStack.getTag()) != null && compoundTag.contains("LiveItemVariantTag", 3)) {
@@ -44,33 +59,17 @@ public class IttyBittyTooltipUtil {
             }
         }
 
-        if ((compoundTag = itemStack.getTag()) != null && compoundTag.contains("BucketVariantTag", 3)) {
-            int i = compoundTag.getInt("BucketVariantTag");
+        addVanillaScientificName(list, type, itemStack);
+    }
 
-            if (type == IttyBittyEntityType.TETRA) {
-                list.add(Component.translatable("entity.itty_bitty.tetra.type." + TetraVariant.byId(i).getType()).withStyle(ChatFormatting.ITALIC, ChatFormatting.DARK_GRAY));
-                list.add(Component.translatable("entity.itty_bitty.tetra.variant." + TetraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
-                addScientificName(list, TetraVariant.byId(i).getScientificName());
-            }
-
-            if (type == IttyBittyEntityType.CORYDORA) {
-                list.add(Component.translatable("entity.itty_bitty.corydora.variant." + CorydoraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
-                addScientificName(list, CorydoraVariant.byId(i).getScientificName());
-            }
-
-            //Add axolotl scientific names
-        }
-
-        if (type == EntityType.AXOLOTL && Screen.hasShiftDown()) {
+    public static void addVanillaScientificName(List<Component> list, EntityType<?> type, ItemStack itemStack) {
+        CompoundTag compoundTag;
+        if (type == EntityType.AXOLOTL && Screen.hasShiftDown() && (compoundTag = itemStack.getTag()) != null &&  compoundTag.contains("Variant", 3)) {
             String name = "A. mexicanum x A. tigrinum";
             if (compoundTag.getInt("Variant") == 1) name = "Ambystoma mexicanum";
             if (compoundTag.getInt("Variant") == 4) name = "Ambystoma tetragonus";
             list.add(Component.translatable("entity.itty_bitty.collected_mob.info_expanded", name).withStyle(ChatFormatting.BLUE));
         }
-        addVanillaScientificName(list, type);
-    }
-
-    public static void addVanillaScientificName(List<Component> list, EntityType<?> type) {
         if (VANILLA_SCIENTIFIC_NAMES.containsKey(type) && Screen.hasShiftDown()) {
             list.add(Component.translatable("entity.itty_bitty.collected_mob.info_expanded", VANILLA_SCIENTIFIC_NAMES.get(type)).withStyle(ChatFormatting.BLUE));
         }
@@ -114,7 +113,7 @@ public class IttyBittyTooltipUtil {
         addVanillaScientificName(EntityType.PUFFERFISH, "Diodon holocanthus");
         addVanillaScientificName(EntityType.TROPICAL_FISH, "temp");
         addVanillaScientificName(EntityType.TADPOLE, "temp");
-        addVanillaScientificName(EntityType.SILVERFISH, "temp");
-        addVanillaScientificName(EntityType.ENDERMITE, "temp");
+        addVanillaScientificName(EntityType.ENDERMITE, "Aceria enderiforme");
+        addVanillaScientificName(EntityType.SILVERFISH, "Petraceria insensilis");
     }
 }
