@@ -4,20 +4,11 @@ import com.ninni.itty_bitty.entity.collectables.IttyBittyBugCollectables;
 import com.ninni.itty_bitty.entity.collectables.IttyBittyFishCollectables;
 import com.ninni.itty_bitty.entity.common.AbstractBug;
 import com.ninni.itty_bitty.entity.common.TerrestrialCollectable;
-import com.ninni.itty_bitty.entity.variant.BeetleVariant;
-import com.ninni.itty_bitty.entity.variant.CorydoraVariant;
-import com.ninni.itty_bitty.entity.variant.TetraVariant;
-import com.ninni.itty_bitty.registry.IttyBittyEntityType;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.animal.TropicalFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
@@ -31,7 +22,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
 
 public class CollectedMobItem extends Item {
     public final EntityType<?> type;
@@ -100,56 +90,6 @@ public class CollectedMobItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-        CompoundTag compoundTag;
-        if (this.type == IttyBittyEntityType.TETRA && (compoundTag = itemStack.getTag()) != null && compoundTag.contains("BucketVariantTag", 3)) {
-            int i = compoundTag.getInt("BucketVariantTag");
-            list.add(Component.translatable("entity.itty_bitty.tetra.type." + TetraVariant.byId(i).getType()).withStyle(ChatFormatting.ITALIC, ChatFormatting.DARK_GRAY));
-            list.add(Component.translatable("entity.itty_bitty.tetra.variant." + TetraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
-
-            if (Screen.hasShiftDown()) {
-                list.add(Component.translatable("entity.itty_bitty.collected_mob.info_expanded", TetraVariant.byId(i).getScientificName()).withStyle(ChatFormatting.BLUE));
-            }
-
-        } else if (this.type == IttyBittyEntityType.CORYDORA && (compoundTag = itemStack.getTag()) != null && compoundTag.contains("BucketVariantTag", 3)) {
-            int i = compoundTag.getInt("BucketVariantTag");
-            list.add(Component.translatable("entity.itty_bitty.corydora.variant." + CorydoraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
-
-            if (Screen.hasShiftDown()) {
-                list.add(Component.translatable("entity.itty_bitty.collected_mob.info_expanded", CorydoraVariant.byId(i).getScientificName()).withStyle(ChatFormatting.BLUE));
-            }
-
-        } else if (this.type == IttyBittyEntityType.BEETLE && (compoundTag = itemStack.getTag()) != null && compoundTag.contains("LiveItemVariantTag", 3)) {
-            int i = compoundTag.getInt("LiveItemVariantTag");
-            list.add(Component.translatable("entity.itty_bitty.beetle.type." + BeetleVariant.byId(i).getType()).withStyle(ChatFormatting.ITALIC, ChatFormatting.DARK_GRAY));
-            list.add(Component.translatable("entity.itty_bitty.beetle.variant." + BeetleVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
-
-            if (Screen.hasShiftDown()) {
-                list.add(Component.translatable("entity.itty_bitty.collected_mob.info_expanded", BeetleVariant.byId(i).getScientificName()).withStyle(ChatFormatting.BLUE));
-            }
-
-        } else {
-            if (this.type == EntityType.TROPICAL_FISH && (compoundTag = itemStack.getTag()) != null && compoundTag.contains("BucketVariantTag", 3)) {
-                int i = compoundTag.getInt("BucketVariantTag");
-                ChatFormatting[] chatFormattings = new ChatFormatting[]{ChatFormatting.ITALIC, ChatFormatting.GRAY};
-                String string = "color.minecraft." + TropicalFish.getBaseColor(i);
-                String string2 = "color.minecraft." + TropicalFish.getPatternColor(i);
-                for (int j = 0; j < TropicalFish.COMMON_VARIANTS.size(); ++j) {
-                    if (i != TropicalFish.COMMON_VARIANTS.get(j).getPackedId()) continue;
-                    list.add(Component.translatable(TropicalFish.getPredefinedName(j)).withStyle(chatFormattings));
-                    return;
-                }
-                list.add(TropicalFish.getPattern(i).displayName().plainCopy().withStyle(chatFormattings));
-                MutableComponent mutableComponent = Component.translatable(string);
-                if (!string.equals(string2)) mutableComponent.append(", ").append(Component.translatable(string2));
-                mutableComponent.withStyle(chatFormattings);
-                list.add(mutableComponent);
-            }
-
-            if ((compoundTag = itemStack.getTag()) != null && compoundTag.getInt("Age") < 0) {
-                list.add(Component.translatable("entity.itty_bitty.collected_mob.baby").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
-            }
-        }
-
-
+        IttyBittyTooltipUtil.ittyBittyTooltips(itemStack, type, list, true);
     }
 }

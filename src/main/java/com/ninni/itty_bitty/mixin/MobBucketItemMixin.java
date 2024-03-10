@@ -1,13 +1,9 @@
 package com.ninni.itty_bitty.mixin;
 
+import com.ninni.itty_bitty.item.IttyBittyTooltipUtil;
 import com.ninni.itty_bitty.entity.collectables.IttyBittyFishCollectables;
-import com.ninni.itty_bitty.IttyBittyTags;
+import com.ninni.itty_bitty.registry.IttyBittyTags;
 import com.ninni.itty_bitty.client.gui.screen.BubbleBoxSlot;
-import com.ninni.itty_bitty.entity.variant.CorydoraVariant;
-import com.ninni.itty_bitty.entity.variant.TetraVariant;
-import com.ninni.itty_bitty.registry.IttyBittyEntityType;
-import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -36,17 +32,7 @@ public abstract class MobBucketItemMixin extends BucketItem {
 
     @Inject(method = "appendHoverText", at = @At("HEAD"))
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag, CallbackInfo ci) {
-        CompoundTag compoundTag;
-        if (this.type == IttyBittyEntityType.TETRA && (compoundTag = itemStack.getTag()) != null && compoundTag.contains("BucketVariantTag", 3)) {
-            int i = compoundTag.getInt("BucketVariantTag");
-            list.add(Component.translatable("entity.itty_bitty.tetra.type." + TetraVariant.byId(i).getType()).withStyle(ChatFormatting.ITALIC, ChatFormatting.DARK_GRAY));
-            list.add(Component.translatable("entity.itty_bitty.tetra.variant." + TetraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
-        }
-
-        if (this.type == IttyBittyEntityType.CORYDORA && (compoundTag = itemStack.getTag()) != null && compoundTag.contains("BucketVariantTag", 3)) {
-            int i = compoundTag.getInt("BucketVariantTag");
-            list.add(Component.translatable("entity.itty_bitty.corydora.variant." + CorydoraVariant.byId(i).getSerializedName()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
-        }
+        IttyBittyTooltipUtil.ittyBittyTooltips(itemStack, type, list, false);
     }
 
     @Override

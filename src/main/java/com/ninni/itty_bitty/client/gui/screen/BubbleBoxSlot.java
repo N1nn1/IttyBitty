@@ -1,6 +1,6 @@
 package com.ninni.itty_bitty.client.gui.screen;
 
-import com.ninni.itty_bitty.IttyBittyTags;
+import com.ninni.itty_bitty.registry.IttyBittyTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;

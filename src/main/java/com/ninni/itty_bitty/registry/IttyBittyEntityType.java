@@ -1,7 +1,6 @@
 package com.ninni.itty_bitty.registry;
 
 import com.ninni.itty_bitty.IttyBitty;
-import com.ninni.itty_bitty.IttyBittyTags;
 import com.ninni.itty_bitty.entity.Beetle;
 import com.ninni.itty_bitty.entity.Corydora;
 import com.ninni.itty_bitty.entity.Tetra;

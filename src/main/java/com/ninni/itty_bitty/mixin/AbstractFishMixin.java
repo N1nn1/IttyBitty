@@ -2,7 +2,7 @@ package com.ninni.itty_bitty.mixin;
 
 import com.ninni.itty_bitty.advancements.IttyBittyCriteriaTriggers;
 import com.ninni.itty_bitty.entity.collectables.IttyBittyFishCollectables;
-import com.ninni.itty_bitty.IttyBittyTags;
+import com.ninni.itty_bitty.registry.IttyBittyTags;
 import com.ninni.itty_bitty.block.BubbleBoxBlockEntity;
 import com.ninni.itty_bitty.registry.IttyBittyBlockEntityType;
 import com.ninni.itty_bitty.registry.IttyBittyItems;
