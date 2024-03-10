@@ -1,8 +1,5 @@
 package com.ninni.itty_bitty.client.model;
 
-
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.ninni.itty_bitty.entity.Tetra;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

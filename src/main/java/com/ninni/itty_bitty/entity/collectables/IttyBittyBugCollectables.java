@@ -1,5 +1,6 @@
 package com.ninni.itty_bitty.entity.collectables;
 
+import com.ninni.itty_bitty.registry.IttyBittyEntityType;
 import com.ninni.itty_bitty.registry.IttyBittyItems;
 import com.ninni.itty_bitty.registry.IttyBittySoundEvents;
 import net.minecraft.sounds.SoundEvent;
@@ -10,7 +11,8 @@ import net.minecraft.world.item.Item;
 public enum IttyBittyBugCollectables {
     SILVERFISH(EntityType.SILVERFISH, IttyBittyItems.LIVE_SILVERFISH, IttyBittySoundEvents.COLLECT_SILVERFISH, IttyBittySoundEvents.RELEASE_SILVERFISH),
     ENDERMITE(EntityType.ENDERMITE, IttyBittyItems.LIVE_ENDERMITE, IttyBittySoundEvents.COLLECT_ENDERMITE, IttyBittySoundEvents.RELEASE_ENDERMITE),
-    BEE(EntityType.BEE, IttyBittyItems.LIVE_BEE, IttyBittySoundEvents.COLLECT_BUG, IttyBittySoundEvents.RELEASE_BUG);
+    BEE(EntityType.BEE, IttyBittyItems.LIVE_BEE, IttyBittySoundEvents.COLLECT_BUG, IttyBittySoundEvents.RELEASE_BUG),
+    BEETLE(IttyBittyEntityType.BEETLE, IttyBittyItems.LIVE_BEETLE, IttyBittySoundEvents.COLLECT_BUG, IttyBittySoundEvents.RELEASE_BUG);
 
 
     private final EntityType type;
@@ -45,6 +47,7 @@ public enum IttyBittyBugCollectables {
         if (type == EntityType.SILVERFISH) return IttyBittyBugCollectables.SILVERFISH;
         else if (type == EntityType.ENDERMITE) return IttyBittyBugCollectables.ENDERMITE;
         else if (type == EntityType.BEE) return IttyBittyBugCollectables.BEE;
+        else if (type == IttyBittyEntityType.BEETLE) return IttyBittyBugCollectables.BEETLE;
         else return null;
     }
 }

@@ -41,6 +41,7 @@
   "item.itty_bitty.live_bee": "Live Bee",
 
   "entity.itty_bitty.collected_mob.baby": "Baby",
+  "entity.itty_bitty.collected_mob.info_expanded": "[%s]",
 
   "subtitles.item.itty_bitty.net.fish": "Fish captured",
   "subtitles.item.itty_bitty.net.axolotl": "Axolotl captured",
@@ -96,6 +97,27 @@
   "entity.itty_bitty.tetra.variant.congo": "Congo",
   "entity.itty_bitty.tetra.variant.black_emperor": "Black Emperor",
   "entity.itty_bitty.tetra.variant.blue_emperor": "Blue Emperor",
+  "entity.itty_bitty.tetra.variant.super_blue_emperor": "Super Blue Emperor",
   "entity.itty_bitty.tetra.variant.emperor": "Emperor",
   "entity.itty_bitty.tetra.variant.rainbow": "Rainbow",
-  "entity.itty_bitty.tetra.variant.buenos_aires": "Buenos Aires"
+  "entity.itty_bitty.tetra.variant.buenos_aires": "Buenos Aires",
+
+  "entity.itty_bitty.beetle": "Beetle",
+  "item.itty_bitty.live_beetle": "Live Beetle",
+  "item.itty_bitty.beetle_spawn_egg": "Beetle Spawn Egg",
+
+  "entity.itty_bitty.beetle.type.weevil": "Weevil",
+  "entity.itty_bitty.beetle.type.rove": "Rove",
+  "entity.itty_bitty.beetle.type.scarab": "Scarab",
+
+  "entity.itty_bitty.beetle.variant.acorn": "Acorn",
+  "entity.itty_bitty.beetle.variant.blue": "Blue",
+  "entity.itty_bitty.beetle.variant.fungus": "Fungus",
+  "entity.itty_bitty.beetle.variant.jewel": "Jewel",
+  "entity.itty_bitty.beetle.variant.palm": "Palm",
+  "entity.itty_bitty.beetle.variant.vine": "Vine",
+  "entity.itty_bitty.beetle.variant.devils_coach_horse": "Devil's Coach Horse",
+  "entity.itty_bitty.beetle.variant.goldcrest": "Goldcrest",
+  "entity.itty_bitty.beetle.variant.splendid": "Splendid",
+  "entity.itty_bitty.beetle.variant.precious": "Precious"
+}

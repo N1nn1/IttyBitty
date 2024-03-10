@@ -2,6 +2,7 @@ package com.ninni.itty_bitty.registry;
 
 import com.ninni.itty_bitty.IttyBitty;
 import com.ninni.itty_bitty.IttyBittyTags;
+import com.ninni.itty_bitty.entity.Beetle;
 import com.ninni.itty_bitty.entity.Corydora;
 import com.ninni.itty_bitty.entity.Tetra;
 import com.ninni.itty_bitty.entity.TreeFrog;
@@ -45,6 +46,17 @@ public class IttyBittyEntityType {
                     .defaultAttributes(TreeFrog::createAttributes)
                     .spawnGroup(MobCategory.CREATURE)
                     .spawnRestriction(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, TreeFrog::checkAnimalSpawnRules)
+                    .dimensions(EntityDimensions.scalable(0.8F, 0.5F))
+                    .trackRangeChunks(10)
+    );
+
+    public static final EntityType<Beetle> BEETLE = register(
+            "beetle",
+            FabricEntityTypeBuilder.createMob()
+                    .entityFactory(Beetle::new)
+                    .defaultAttributes(Beetle::createAttributes)
+                    .spawnGroup(MobCategory.CREATURE)
+                    .spawnRestriction(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.WORLD_SURFACE, Beetle::checkAnimalSpawnRules)
                     .dimensions(EntityDimensions.scalable(0.8F, 0.5F))
                     .trackRangeChunks(10)
     );

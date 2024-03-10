@@ -3,6 +3,7 @@ package com.ninni.itty_bitty;
 import com.google.common.reflect.Reflection;
 import com.ninni.itty_bitty.client.gui.screen.BubbleBoxScreen;
 import com.ninni.itty_bitty.client.gui.screen.BugBoxScreen;
+import com.ninni.itty_bitty.client.renderer.entity.BeetleRenderer;
 import com.ninni.itty_bitty.client.renderer.entity.CorydoraRenderer;
 import com.ninni.itty_bitty.client.renderer.entity.TetraRenderer;
 import com.ninni.itty_bitty.client.renderer.entity.TreeFrogRenderer;
@@ -38,6 +39,7 @@ public class IttyBittyVanillaIntegration {
             EntityRendererRegistry.register(IttyBittyEntityType.CORYDORA, CorydoraRenderer::new);
             EntityRendererRegistry.register(IttyBittyEntityType.TETRA, TetraRenderer::new);
             EntityRendererRegistry.register(IttyBittyEntityType.TREE_FROG, TreeFrogRenderer::new);
+            EntityRendererRegistry.register(IttyBittyEntityType.BEETLE, BeetleRenderer::new);
         }
 
         private static void registerScreens() {

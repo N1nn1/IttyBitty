@@ -7,22 +7,24 @@ import net.minecraft.util.StringRepresentable;
 import java.util.function.IntFunction;
 
 public enum CorydoraVariant implements StringRepresentable {
-    ADOLFOI(0, "adolfoi"),
-    BRONZE(1, "bronze"),
-    PANDA(2, "panda"),
-    PEPPERED(3, "peppered"),
-    STERBAI(4, "sterbai"),
-    VENEZUELAN_BLACK(5, "venezuelan_black"),
-    VENEZUELAN_ORANGE(6, "venezuelan_orange");
+    ADOLFOI(0, "adolfoi", "Corydoras adolfoi"),
+    BRONZE(1, "bronze", "Corydoras aeneus"),
+    PANDA(2, "panda", "Corydoras panda"),
+    PEPPERED(3, "peppered", "Corydoras paleatus"),
+    STERBAI(4, "sterbai", "Corydoras sterbai"),
+    VENEZUELAN_BLACK(5, "venezuelan_black", "Corydoras schultzei"),
+    VENEZUELAN_ORANGE(6, "venezuelan_orange", "Corydoras aeneus orange");
 
     private static final IntFunction<CorydoraVariant> BY_ID;
     public static final Codec<CorydoraVariant> CODEC;
     final int id;
     private final String name;
+    private final String scientificName;
 
-    CorydoraVariant(int j, String string) {
+    CorydoraVariant(int j, String string, String scientificName) {
         this.id = j;
         this.name = string;
+        this.scientificName = scientificName;
     }
 
     @Override
@@ -41,5 +43,9 @@ public enum CorydoraVariant implements StringRepresentable {
     static {
         BY_ID = ByIdMap.sparse(CorydoraVariant::id, CorydoraVariant.values(), ADOLFOI);
         CODEC = StringRepresentable.fromEnum(CorydoraVariant::values);
+    }
+
+    public String getScientificName() {
+        return scientificName;
     }
 }

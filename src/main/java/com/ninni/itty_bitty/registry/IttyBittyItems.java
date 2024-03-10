@@ -20,11 +20,14 @@ public class IttyBittyItems {
     public static final Item BUBBLEBOX = register("bubblebox", new BlockItem(IttyBittyBlocks.BUBBLEBOX, new Item.Properties().stacksTo(1)));
     public static final Item BUGBOX = register("bugbox", new BlockItem(IttyBittyBlocks.BUGBOX, new Item.Properties().stacksTo(1)));
 
-    public static final Item CORYDORA_SPAWN_EGG = register("corydora_spawn_egg", new SpawnEggItem(IttyBittyEntityType.CORYDORA, 0x263434, 0x937B6C, new Item.Properties()));
+    public static final Item CORYDORA_SPAWN_EGG = register("corydora_spawn_egg", new SpawnEggItem(IttyBittyEntityType.CORYDORA, 0x937B6C, 0x263434, new Item.Properties()));
     public static final Item CORYDORA_BUCKET = register("corydora_bucket", new MobBucketItem(IttyBittyEntityType.CORYDORA, Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().stacksTo(1)));
 
     public static final Item TETRA_SPAWN_EGG = register("tetra_spawn_egg", new SpawnEggItem(IttyBittyEntityType.TETRA, 0xD8422E, 0x0EF9F4, new Item.Properties()));
     public static final Item TETRA_BUCKET = register("tetra_bucket", new MobBucketItem(IttyBittyEntityType.TETRA, Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().stacksTo(1)));
+
+    public static final Item BEETLE_SPAWN_EGG = register("beetle_spawn_egg", new SpawnEggItem(IttyBittyEntityType.BEETLE, 0x282924, 0x935131, new Item.Properties()));
+
 
     public static final Item LIVE_COD = register("live_cod", new CollectedMobItem(EntityType.COD, true, new Item.Properties().stacksTo(1)));
     public static final Item LIVE_SALMON = register("live_salmon", new CollectedMobItem(EntityType.SALMON, true, new Item.Properties().stacksTo(1)));
@@ -38,6 +41,7 @@ public class IttyBittyItems {
     public static final Item LIVE_SILVERFISH = register("live_silverfish", new CollectedMobItem(EntityType.SILVERFISH, false, new Item.Properties().stacksTo(1)));
     public static final Item LIVE_ENDERMITE = register("live_endermite", new CollectedMobItem(EntityType.ENDERMITE, false, new Item.Properties().stacksTo(1)));
     public static final Item LIVE_BEE = register("live_bee", new CollectedMobItem(EntityType.BEE, false, new Item.Properties().stacksTo(1)));
+    public static final Item LIVE_BEETLE = register("live_beetle", new CollectedMobItem(IttyBittyEntityType.BEETLE, false, new Item.Properties().stacksTo(1)));
 
     private static Item register(String id, Item item) {
         return Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(IttyBitty.MOD_ID, id), item);

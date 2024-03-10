@@ -1,6 +1,7 @@
 package com.ninni.itty_bitty.registry;
 
 import com.ninni.itty_bitty.block.BubbleBoxBlockEntity;
+import com.ninni.itty_bitty.block.BugBoxBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -18,9 +19,9 @@ public class IttyBittyBlockEntityType {
             ).build(null)
     );
 
-    public static final BlockEntityType<BubbleBoxBlockEntity> BUGBOX = Registry.register(
+    public static final BlockEntityType<BugBoxBlockEntity> BUGBOX = Registry.register(
             BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation(MOD_ID, "bugbox"),
-            FabricBlockEntityTypeBuilder.create(BubbleBoxBlockEntity::new,
+            FabricBlockEntityTypeBuilder.create(BugBoxBlockEntity::new,
                     IttyBittyBlocks.BUGBOX
             ).build(null)
     );

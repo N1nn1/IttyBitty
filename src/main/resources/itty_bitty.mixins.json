@@ -5,6 +5,7 @@
   "mixins": [
     "AbstractFishMixin",
     "AxolotlMixin",
+    "BeeAccessor",
     "MobBucketItemMixin",
     "MobMixin"
   ],

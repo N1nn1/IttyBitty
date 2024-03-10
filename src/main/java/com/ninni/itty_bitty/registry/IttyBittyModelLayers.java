@@ -1,5 +1,6 @@
 package com.ninni.itty_bitty.registry;
 
+import com.ninni.itty_bitty.client.model.BeetleModel;
 import com.ninni.itty_bitty.client.model.CorydoraModel;
 import com.ninni.itty_bitty.client.model.TetraModel;
 import com.ninni.itty_bitty.client.model.TreeFrogModel;
@@ -16,6 +17,9 @@ public interface IttyBittyModelLayers {
     ModelLayerLocation TETRA_DINNERPLATE = main("tetra_dinnerplate", TetraModel::createDinnerplateBodyLayer);
     ModelLayerLocation TETRA_ROCKET = main("tetra_rocket", TetraModel::createRocketBodyLayer);
     ModelLayerLocation TREE_FROG = main("tree_frog", TreeFrogModel::createBodyLayer);
+    ModelLayerLocation BEETLE_WEEVIL = main("beetle_weevil", BeetleModel::createWeevilBodyLayer);
+    ModelLayerLocation BEETLE_ROVE = main("beetle_rove", BeetleModel::createRoveBodyLayer);
+    ModelLayerLocation BEETLE_SCARAB = main("beetle_scarab", BeetleModel::createScarabBodyLayer);
 
     private static ModelLayerLocation register(String id, String name, EntityModelLayerRegistry.TexturedModelDataProvider provider) {
         ModelLayerLocation layer = new ModelLayerLocation(new ResourceLocation(MOD_ID, id), name);
