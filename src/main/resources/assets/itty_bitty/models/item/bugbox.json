@@ -1,3 +1,6 @@
 {
-  "parent": "itty_bitty:block/bugbox"
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "itty_bitty:item/bugbox"
+	}
 }

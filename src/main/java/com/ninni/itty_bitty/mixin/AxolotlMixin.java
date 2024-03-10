@@ -39,7 +39,6 @@ public abstract class AxolotlMixin extends Animal implements LerpingModel, Varia
     public void collect(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
         ItemStack output;
 
-
             for (ItemStack itemStack2 : player.getInventory().items) {
                 if (itemStack2.is(IttyBittyItems.BUBBLEBOX)) {
                     if (player.getMainHandItem().is(IttyBittyTags.NETS) && this.isAlive()) {

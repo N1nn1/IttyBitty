@@ -10,7 +10,9 @@
     "MobMixin"
   ],
   "client": [
-    "MultiPlayerGameModeMixin"
+    "client.ItemRendererMixin",
+    "client.ModelBakeryMixin",
+    "client.MultiPlayerGameModeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

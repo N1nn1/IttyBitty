@@ -1,4 +1,4 @@
-package com.ninni.itty_bitty.mixin;
+package com.ninni.itty_bitty.mixin.client;
 
 import com.ninni.itty_bitty.registry.IttyBittyItems;
 import net.minecraft.client.Minecraft;
@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MultiPlayerGameMode.class)
 public abstract class MultiPlayerGameModeMixin {
-
 
     @Shadow @Final private Minecraft minecraft;
 
